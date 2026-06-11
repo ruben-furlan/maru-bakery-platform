@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist/maru-bakery/browser"
+
+# Las variables NG_APP_SUPABASE_URL y NG_APP_SUPABASE_ANON_KEY
+# se configuran en Netlify (Site settings → Environment variables)
+# y se inyectan en el build mediante scripts/set-env.mjs.

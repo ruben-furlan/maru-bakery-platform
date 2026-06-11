@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Círculo bordó de la marca -->
+  <circle cx="32" cy="32" r="30" fill="#7C0F2A"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#E3B970" stroke-width="2.5"/>
+  <!-- Manga pastelera estilo trazo, color crema -->
+  <g fill="none" stroke="#F2E3BC" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- cuerpo de la manga -->
+    <path d="M40 14 L50 24 L28 50 L17 53 L20 42 Z"/>
+    <!-- pliegue -->
+    <path d="M35 21 L43 29"/>
+    <!-- moño / cierre superior -->
+    <circle cx="46" cy="13" r="4.6"/>
+  </g>
+</svg>

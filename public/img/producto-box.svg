@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f2e3bc"/>
+  <circle cx="200" cy="200" r="130" fill="#7c0f2a" opacity="0.18"/>
+  <circle cx="200" cy="200" r="100" fill="#7c0f2a" opacity="0.25"/>
+  <text x="200" y="235" font-size="110" text-anchor="middle">🎁</text>
+</svg>
