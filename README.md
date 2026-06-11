@@ -60,6 +60,78 @@ export const environment = {
 3. `public/_redirects` (`/* /index.html 200`) hace que las rutas de Angular
    funcionen al recargar la página.
 
+## Notificaciones por email
+
+Cada consulta nueva del formulario (INSERT en `pedidos`) dispara un email a la
+dueña vía **Database Webhook → Edge Function (`notify-pedido`) → Resend**.
+El frontend no envía emails ni conoce la API key: el email es un efecto
+colateral asíncrono del lado de la base (si Resend falla, el pedido se guarda
+igual y el error queda en los logs de la función).
+
+### 1. CLI de Supabase (si no la tenés)
+
+```bash
+npm i -D supabase
+npx supabase login
+npx supabase link --project-ref <REF>   # Settings → General → Reference ID
+```
+
+### 2. Secrets de la función
+
+```bash
+npx supabase secrets set RESEND_API_KEY=<api-key-de-resend> WEBHOOK_SECRET=<secreto-largo-aleatorio> NOTIFY_EMAIL_TO=duena@ejemplo.com NOTIFY_EMAIL_FROM="Marü Bakery <pedidos@tudominio.com>"
+```
+
+> **Remitente:** para probar sin verificar dominio usá
+> `NOTIFY_EMAIL_FROM=onboarding@resend.dev` (Resend solo entrega al email de
+> tu propia cuenta). Para producción, verificá tu dominio en
+> [Resend → Domains](https://resend.com/domains) y usá una casilla de ese dominio.
+
+### 3. Deploy
+
+```bash
+npx supabase functions deploy notify-pedido --no-verify-jwt
+```
+
+Se deploya con `--no-verify-jwt` porque el webhook no manda un JWT de Supabase;
+la función valida su propio secret (`Authorization: Bearer ${WEBHOOK_SECRET}`)
+y responde 401 sin él.
+
+### 4. Webhook
+
+Crealo desde el dashboard siguiendo [`supabase/webhook-setup.md`](supabase/webhook-setup.md).
+
+### 5. Probar la función deployada (sin tocar la base)
+
+Con el secret correcto (espera 200 y el email):
+
+```bash
+curl -i -X POST "https://<PROJECT_REF>.supabase.co/functions/v1/notify-pedido" \
+  -H "Authorization: Bearer <WEBHOOK_SECRET>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "INSERT",
+    "table": "pedidos",
+    "record": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "nombre": "Cliente de Prueba",
+      "contacto": "099 123 456",
+      "mensaje": "Hola! Quería consultar por una torta para 20 personas.",
+      "producto": "Torta de chocolate intenso",
+      "estado": "pendiente",
+      "creado_en": "2026-06-11T15:30:00Z"
+    }
+  }'
+```
+
+Sin `Authorization` (espera 401):
+
+```bash
+curl -i -X POST "https://<PROJECT_REF>.supabase.co/functions/v1/notify-pedido" \
+  -H "Content-Type: application/json" \
+  -d '{"type":"INSERT","table":"pedidos","record":{"nombre":"x","contacto":"x","mensaje":"x","creado_en":"2026-06-11T15:30:00Z"}}'
+```
+
 ## Estructura
 
 ```
@@ -68,7 +140,10 @@ src/app/
 ├── shared/      # directiva de revelado al scroll, logo (manga pastelera SVG)
 ├── landing/     # header, hero, marquee, vitrina, pasos, instagram, footer, bottom bar
 └── admin/       # login, layout con sidebar, productos, destacados, textos, pedidos
-supabase/schema.sql   # esquema completo + RLS + seed
+supabase/
+├── schema.sql                        # esquema completo + RLS + seed
+├── webhook-setup.md                  # cómo crear el webhook pedidos-notify
+└── functions/notify-pedido/index.ts  # Edge Function: email vía Resend
 ```
 
 ## Accesibilidad y rendimiento
