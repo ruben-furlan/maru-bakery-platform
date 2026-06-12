@@ -12,7 +12,12 @@ export interface Producto {
 
 export type ProductoNuevo = Omit<Producto, 'id' | 'creado_en'>;
 
-export const CATEGORIAS = ['Tortas', 'Postres individuales', 'Box dulces', 'Tortas personalizadas'] as const;
+export const CATEGORIAS = [
+  'Tortas',
+  'Postres individuales',
+  'Box dulces',
+  'Tortas personalizadas',
+] as const;
 
 export interface Pedido {
   id?: string;

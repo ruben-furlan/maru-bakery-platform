@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, NgZone, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  NgZone,
+  OnDestroy,
+} from '@angular/core';
 
 /**
  * Barra fina de progreso de lectura, fija sobre el header.
@@ -9,7 +17,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="pointer-events-none fixed inset-x-0 top-0 z-50 h-1" aria-hidden="true">
-      <div class="barra h-full w-full origin-left bg-gradient-to-r from-dorado via-dorado to-crema"></div>
+      <div
+        class="barra h-full w-full origin-left bg-gradient-to-r from-dorado via-dorado to-crema"
+      ></div>
     </div>
   `,
   styles: `

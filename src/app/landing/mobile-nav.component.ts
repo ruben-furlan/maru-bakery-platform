@@ -30,13 +30,19 @@ import { CartService } from '../core/cart.service';
     >
       <ul class="grid grid-cols-4">
         <li>
-          <a href="#inicio" class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80">
+          <a
+            href="#inicio"
+            class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80"
+          >
             <span class="text-lg" aria-hidden="true">🏠</span>
             Inicio
           </a>
         </li>
         <li>
-          <a href="#productos" class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80">
+          <a
+            href="#productos"
+            class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80"
+          >
             <span class="text-lg" aria-hidden="true">🧁</span>
             Vitrina
           </a>
@@ -52,7 +58,10 @@ import { CartService } from '../core/cart.service';
           </button>
         </li>
         <li>
-          <a href="#contacto" class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80">
+          <a
+            href="#contacto"
+            class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80"
+          >
             <span class="text-lg" aria-hidden="true">📍</span>
             Contacto
           </a>

@@ -14,22 +14,51 @@ import { TiltDirective } from '../shared/tilt.directive';
     <section id="inicio" class="relative overflow-hidden bg-bordo text-crema">
       <!-- Capa decorativa con profundidad: cada forma se mueve a su propia velocidad -->
       <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-        <span [appParallax]="0.3" class="absolute -top-24 right-[-8rem] h-96 w-96 rounded-full bg-dorado/15 blur-3xl"></span>
-        <span [appParallax]="-0.2" class="absolute bottom-[-6rem] left-[-6rem] h-80 w-80 rounded-full bg-crema/10 blur-3xl"></span>
-        <span [appParallax]="0.45" class="flotante absolute left-[10%] top-24 hidden h-16 w-16 rounded-full border-2 border-dorado/25 lg:block"></span>
-        <span [appParallax]="-0.35" [parallaxMovil]="true" class="flotante-lento absolute right-[14%] top-16 text-2xl text-dorado/40">✦</span>
-        <span [appParallax]="0.25" [parallaxMovil]="true" class="flotante-lento absolute bottom-20 left-[45%] h-3 w-3 rounded-full bg-dorado/40"></span>
-        <span [appParallax]="-0.15" [parallaxMovil]="true" class="flotante absolute bottom-32 right-[6%] text-lg text-crema/30">✦</span>
+        <span
+          [appParallax]="0.3"
+          class="absolute -top-24 right-[-8rem] h-96 w-96 rounded-full bg-dorado/15 blur-3xl"
+        ></span>
+        <span
+          [appParallax]="-0.2"
+          class="absolute bottom-[-6rem] left-[-6rem] h-80 w-80 rounded-full bg-crema/10 blur-3xl"
+        ></span>
+        <span
+          [appParallax]="0.45"
+          class="flotante absolute left-[10%] top-24 hidden h-16 w-16 rounded-full border-2 border-dorado/25 lg:block"
+        ></span>
+        <span
+          [appParallax]="-0.35"
+          [parallaxMovil]="true"
+          class="flotante-lento absolute right-[14%] top-16 text-2xl text-dorado/40"
+          >✦</span
+        >
+        <span
+          [appParallax]="0.25"
+          [parallaxMovil]="true"
+          class="flotante-lento absolute bottom-20 left-[45%] h-3 w-3 rounded-full bg-dorado/40"
+        ></span>
+        <span
+          [appParallax]="-0.15"
+          [parallaxMovil]="true"
+          class="flotante absolute bottom-32 right-[6%] text-lg text-crema/30"
+          >✦</span
+        >
       </div>
 
-      <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 lg:grid-cols-[1.2fr_1fr] lg:px-8 lg:pt-20">
+      <div
+        class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 lg:grid-cols-[1.2fr_1fr] lg:px-8 lg:pt-20"
+      >
         <div appReveal>
-          <p class="mb-4 inline-block rounded-full border border-dorado/60 px-4 py-1 text-sm tracking-wide text-dorado">
+          <p
+            class="mb-4 inline-block rounded-full border border-dorado/60 px-4 py-1 text-sm tracking-wide text-dorado"
+          >
             Pastelería artesanal · Montevideo
           </p>
           <h1 class="text-4xl leading-tight sm:text-5xl lg:text-6xl">
             {{ esloganPrincipio() }}
-            <span class="font-script mt-2 inline-block -rotate-2 text-dorado">{{ esloganFinal() }}</span>
+            <span class="font-script mt-2 inline-block -rotate-2 text-dorado">{{
+              esloganFinal()
+            }}</span>
           </h1>
           <p class="mt-6 max-w-xl text-lg text-crema/85">{{ textos.textos().hero_subtitulo }}</p>
 

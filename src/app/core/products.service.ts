@@ -70,7 +70,10 @@ export class ProductsService {
     const client = this.supabase.client;
     if (!client) return 'Supabase no está configurado.';
 
-    const { error: e1 } = await client.from('productos').update({ destacado: false }).eq('destacado', true);
+    const { error: e1 } = await client
+      .from('productos')
+      .update({ destacado: false })
+      .eq('destacado', true);
     if (e1) return e1.message;
     const { error: e2 } = await client.from('productos').update({ destacado: true }).eq('id', id);
     if (e2) return e2.message;

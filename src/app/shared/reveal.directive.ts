@@ -36,7 +36,9 @@ export class RevealDirective implements OnInit, OnDestroy {
           if (entrada.isIntersecting) {
             el.classList.add('reveal-visible');
             // El retraso solo aplica a la entrada, no a transiciones posteriores
-            el.addEventListener('transitionend', () => (el.style.transitionDelay = ''), { once: true });
+            el.addEventListener('transitionend', () => (el.style.transitionDelay = ''), {
+              once: true,
+            });
             this.observer?.disconnect();
           }
         }

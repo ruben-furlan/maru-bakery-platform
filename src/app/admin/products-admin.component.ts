@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CATEGORIAS, Producto } from '../core/models';
@@ -28,7 +35,9 @@ const FORMULARIO_VACIO: FormularioProducto = {
   imports: [CurrencyPipe, FormsModule],
   template: `
     <h1 class="text-2xl text-bordo">Productos</h1>
-    <p class="mt-1 text-sm text-cacao/60">Lo que cargues acá aparece directo en la vitrina de la landing.</p>
+    <p class="mt-1 text-sm text-cacao/60">
+      Lo que cargues acá aparece directo en la vitrina de la landing.
+    </p>
 
     @if (mensaje(); as msg) {
       <p class="mt-4 rounded-xl bg-dorado/20 p-3 text-sm text-cacao" role="status">{{ msg }}</p>
@@ -36,27 +45,56 @@ const FORMULARIO_VACIO: FormularioProducto = {
 
     <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
       <!-- Formulario alta / edición -->
-      <form #formulario class="h-fit scroll-mt-10 space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6 md:scroll-mt-0" (ngSubmit)="guardar()">
-        <h2 class="text-lg text-bordo">{{ editandoId() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+      <form
+        #formulario
+        class="h-fit scroll-mt-10 space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6 md:scroll-mt-0"
+        (ngSubmit)="guardar()"
+      >
+        <h2 class="text-lg text-bordo">
+          {{ editandoId() ? 'Editar producto' : 'Nuevo producto' }}
+        </h2>
 
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Nombre</span>
-          <input type="text" name="nombre" [(ngModel)]="form.nombre" required class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="form.nombre"
+            required
+            class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+          />
         </label>
 
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Descripción</span>
-          <textarea name="descripcion" [(ngModel)]="form.descripcion" rows="3" required class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"></textarea>
+          <textarea
+            name="descripcion"
+            [(ngModel)]="form.descripcion"
+            rows="3"
+            required
+            class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+          ></textarea>
         </label>
 
         <div class="grid grid-cols-2 gap-4">
           <label class="block">
             <span class="mb-1 block text-sm font-bold">Precio ($U)</span>
-            <input type="number" name="precio" [(ngModel)]="form.precio" min="0" required class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+            <input
+              type="number"
+              name="precio"
+              [(ngModel)]="form.precio"
+              min="0"
+              required
+              class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+            />
           </label>
           <label class="block">
             <span class="mb-1 block text-sm font-bold">Categoría</span>
-            <select name="categoria" [(ngModel)]="form.categoria" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5">
+            <select
+              name="categoria"
+              [(ngModel)]="form.categoria"
+              class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+            >
               @for (cat of categorias; track cat) {
                 <option [value]="cat">{{ cat }}</option>
               }
@@ -66,14 +104,28 @@ const FORMULARIO_VACIO: FormularioProducto = {
 
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Foto</span>
-          <input type="file" accept="image/*" (change)="seleccionarImagen($event)" class="w-full text-sm" />
+          <input
+            type="file"
+            accept="image/*"
+            (change)="seleccionarImagen($event)"
+            class="w-full text-sm"
+          />
           @if (form.imagen_url) {
-            <img [src]="form.imagen_url" alt="Vista previa del producto" class="mt-2 h-24 w-24 rounded-xl object-cover" />
+            <img
+              [src]="form.imagen_url"
+              alt="Vista previa del producto"
+              class="mt-2 h-24 w-24 rounded-xl object-cover"
+            />
           }
         </label>
 
         <label class="flex items-center gap-2">
-          <input type="checkbox" name="disponible" [(ngModel)]="form.disponible" class="h-4 w-4 accent-bordo" />
+          <input
+            type="checkbox"
+            name="disponible"
+            [(ngModel)]="form.disponible"
+            class="h-4 w-4 accent-bordo"
+          />
           <span class="text-sm font-bold">Disponible en la vitrina</span>
         </label>
 
@@ -90,7 +142,11 @@ const FORMULARIO_VACIO: FormularioProducto = {
             {{ guardando() ? 'Guardando…' : editandoId() ? 'Guardar cambios' : 'Crear producto' }}
           </button>
           @if (editandoId()) {
-            <button type="button" (click)="cancelarEdicion()" class="rounded-full border border-cacao/30 px-6 py-2.5 font-bold">
+            <button
+              type="button"
+              (click)="cancelarEdicion()"
+              class="rounded-full border border-cacao/30 px-6 py-2.5 font-bold"
+            >
               Cancelar
             </button>
           }
@@ -100,8 +156,14 @@ const FORMULARIO_VACIO: FormularioProducto = {
       <!-- Listado -->
       <ul class="space-y-3">
         @for (producto of productos.productos(); track producto.id) {
-          <li class="flex flex-wrap items-center gap-3 rounded-vitrina bg-white p-4 shadow-bordo sm:gap-4">
-            <img [src]="producto.imagen_url" [alt]="producto.nombre" class="h-16 w-16 shrink-0 rounded-xl object-cover" />
+          <li
+            class="flex flex-wrap items-center gap-3 rounded-vitrina bg-white p-4 shadow-bordo sm:gap-4"
+          >
+            <img
+              [src]="producto.imagen_url"
+              [alt]="producto.nombre"
+              class="h-16 w-16 shrink-0 rounded-xl object-cover"
+            />
             <div class="min-w-0 flex-1">
               <p class="truncate font-display font-bold text-bordo">
                 {{ producto.nombre }}
@@ -110,7 +172,8 @@ const FORMULARIO_VACIO: FormularioProducto = {
                 }
               </p>
               <p class="text-sm text-cacao/60">
-                {{ producto.categoria }} · {{ producto.precio | currency: 'UYU' : '$ ' : '1.0-0' }} ·
+                {{ producto.categoria }} ·
+                {{ producto.precio | currency: 'UYU' : '$ ' : '1.0-0' }} ·
                 {{ producto.disponible ? 'Disponible' : 'No disponible' }}
               </p>
             </div>
@@ -132,7 +195,9 @@ const FORMULARIO_VACIO: FormularioProducto = {
             </div>
           </li>
         } @empty {
-          <li class="rounded-vitrina bg-white p-6 text-center text-cacao/60 shadow-bordo">Todavía no hay productos cargados.</li>
+          <li class="rounded-vitrina bg-white p-6 text-center text-cacao/60 shadow-bordo">
+            Todavía no hay productos cargados.
+          </li>
         }
       </ul>
     </div>

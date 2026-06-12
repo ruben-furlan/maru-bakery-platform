@@ -13,7 +13,9 @@ import { LogoComponent } from '../shared/logo.component';
           <span class="block h-10 w-10 text-crema"><app-logo /></span>
           <span class="leading-none">
             <span class="font-script text-2xl">Marü</span>
-            <span class="block font-display text-[0.65rem] uppercase tracking-[0.35em] text-dorado">Bakery</span>
+            <span class="block font-display text-[0.65rem] uppercase tracking-[0.35em] text-dorado"
+              >Bakery</span
+            >
           </span>
         </a>
 
@@ -73,10 +75,29 @@ import { LogoComponent } from '../shared/logo.component';
       >
         <nav class="min-h-0 overflow-hidden" aria-label="Navegación mobile">
           <ul class="flex flex-col gap-1 px-6 py-4">
-            <li><a href="#productos" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Productos</a></li>
-            <li><a href="#como-encargar" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Cómo encargar</a></li>
-            <li><a href="#nosotros" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Nosotros</a></li>
-            <li><a href="#contacto" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Contacto</a></li>
+            <li>
+              <a href="#productos" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)"
+                >Productos</a
+              >
+            </li>
+            <li>
+              <a
+                href="#como-encargar"
+                class="block py-2.5 font-medium"
+                (click)="menuAbierto.set(false)"
+                >Cómo encargar</a
+              >
+            </li>
+            <li>
+              <a href="#nosotros" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)"
+                >Nosotros</a
+              >
+            </li>
+            <li>
+              <a href="#contacto" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)"
+                >Contacto</a
+              >
+            </li>
             <li class="pt-2">
               <button
                 type="button"

@@ -11,7 +11,9 @@ export class CartService {
   readonly items = signal<ItemCarrito[]>(this.leerDeStorage());
   readonly abierto = signal(false);
 
-  readonly cantidadTotal = computed(() => this.items().reduce((suma, item) => suma + item.cantidad, 0));
+  readonly cantidadTotal = computed(() =>
+    this.items().reduce((suma, item) => suma + item.cantidad, 0),
+  );
   readonly total = computed(() =>
     this.items().reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0),
   );
@@ -27,7 +29,9 @@ export class CartService {
     this.items.update((items) => {
       const existente = items.find((i) => i.producto.id === producto.id);
       if (existente) {
-        return items.map((i) => (i.producto.id === producto.id ? { ...i, cantidad: i.cantidad + 1 } : i));
+        return items.map((i) =>
+          i.producto.id === producto.id ? { ...i, cantidad: i.cantidad + 1 } : i,
+        );
       }
       return [...items, { producto, cantidad: 1 }];
     });

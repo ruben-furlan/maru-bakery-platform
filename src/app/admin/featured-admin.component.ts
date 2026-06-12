@@ -22,12 +22,18 @@ import { ProductsService } from '../core/products.service';
             [class.ring-4]="producto.destacado"
             [class.ring-dorado]="producto.destacado"
           >
-            <img [src]="producto.imagen_url" [alt]="producto.nombre" class="aspect-video w-full object-cover" />
+            <img
+              [src]="producto.imagen_url"
+              [alt]="producto.nombre"
+              class="aspect-video w-full object-cover"
+            />
             <div class="flex flex-1 flex-col p-4">
               <h2 class="font-display font-bold text-bordo">{{ producto.nombre }}</h2>
               <p class="mt-1 flex-1 text-sm text-cacao/60">{{ producto.categoria }}</p>
               @if (producto.destacado) {
-                <p class="mt-3 rounded-full bg-dorado px-4 py-2 text-center text-sm font-bold text-cacao">
+                <p
+                  class="mt-3 rounded-full bg-dorado px-4 py-2 text-center text-sm font-bold text-cacao"
+                >
                   ⭐ Producto de la semana
                 </p>
               } @else {

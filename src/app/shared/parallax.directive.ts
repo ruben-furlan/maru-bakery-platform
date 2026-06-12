@@ -48,7 +48,12 @@ export class ParallaxDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     const prefiereReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (prefiereReducido || (!conMouse && !this.parallaxMovil()) || !('IntersectionObserver' in window)) return;
+    if (
+      prefiereReducido ||
+      (!conMouse && !this.parallaxMovil()) ||
+      !('IntersectionObserver' in window)
+    )
+      return;
 
     const el = this.elemento.nativeElement;
     el.style.willChange = 'transform';

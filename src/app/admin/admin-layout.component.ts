@@ -10,13 +10,17 @@ import { LogoComponent } from '../shared/logo.component';
   template: `
     <div class="flex min-h-screen flex-col bg-[#fdf8ec] md:flex-row">
       <!-- Sidebar (header sticky en mobile) -->
-      <aside class="sticky top-0 z-40 flex shrink-0 flex-col bg-bordo text-crema shadow-bordo md:static md:min-h-screen md:w-64 md:shadow-none">
+      <aside
+        class="sticky top-0 z-40 flex shrink-0 flex-col bg-bordo text-crema shadow-bordo md:static md:min-h-screen md:w-64 md:shadow-none"
+      >
         <div class="flex items-center justify-between">
           <a routerLink="/" class="flex items-center gap-2 px-4 py-3 md:px-5 md:py-4">
             <span class="block h-9 w-9"><app-logo /></span>
             <span class="leading-none">
               <span class="font-script text-xl">Marü</span>
-              <span class="block font-display text-[0.6rem] uppercase tracking-[0.35em] text-dorado">Admin</span>
+              <span class="block font-display text-[0.6rem] uppercase tracking-[0.35em] text-dorado"
+                >Admin</span
+              >
             </span>
           </a>
           <button
@@ -30,7 +34,9 @@ import { LogoComponent } from '../shared/logo.component';
         </div>
 
         <nav class="px-3 pb-2 md:flex-1 md:pb-4" aria-label="Navegación del panel">
-          <ul class="scrollbar-none -mx-3 flex gap-1 overflow-x-auto px-3 md:mx-0 md:flex-col md:overflow-visible md:px-0">
+          <ul
+            class="scrollbar-none -mx-3 flex gap-1 overflow-x-auto px-3 md:mx-0 md:flex-col md:overflow-visible md:px-0"
+          >
             @for (item of menu; track item.ruta) {
               <li>
                 <a

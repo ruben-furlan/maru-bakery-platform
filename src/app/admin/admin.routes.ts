@@ -15,12 +15,14 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: '',
         title: 'Productos — Marü Bakery Admin',
-        loadComponent: () => import('./products-admin.component').then((m) => m.ProductsAdminComponent),
+        loadComponent: () =>
+          import('./products-admin.component').then((m) => m.ProductsAdminComponent),
       },
       {
         path: 'destacados',
         title: 'Destacados — Marü Bakery Admin',
-        loadComponent: () => import('./featured-admin.component').then((m) => m.FeaturedAdminComponent),
+        loadComponent: () =>
+          import('./featured-admin.component').then((m) => m.FeaturedAdminComponent),
       },
       {
         path: 'textos',
@@ -30,7 +32,8 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'testimonios',
         title: 'Testimonios — Marü Bakery Admin',
-        loadComponent: () => import('./testimonials-admin.component').then((m) => m.TestimonialsAdminComponent),
+        loadComponent: () =>
+          import('./testimonials-admin.component').then((m) => m.TestimonialsAdminComponent),
       },
       {
         path: 'pedidos',

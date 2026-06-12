@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-bordo: #7c0f2a;
@@ -7,9 +7,9 @@
   --color-dorado: #e3b970;
   --color-cacao: #2a1216;
 
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-body: "Karla", "Segoe UI", sans-serif;
-  --font-script: "Pacifico", cursive;
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Karla', 'Segoe UI', sans-serif;
+  --font-script: 'Pacifico', cursive;
 
   --shadow-bordo: 0 10px 30px -8px rgba(124, 15, 42, 0.35);
   --shadow-bordo-lg: 0 20px 45px -10px rgba(124, 15, 42, 0.45);
@@ -145,7 +145,7 @@ h4 {
 }
 
 .nav-link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -4px;

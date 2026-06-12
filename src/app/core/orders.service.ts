@@ -41,7 +41,11 @@ export class OrdersService {
       direccion: datos.direccion || null,
       pago: datos.pago,
       preferencias: datos.preferencias || null,
-      items: items.map((i) => ({ nombre: i.producto.nombre, precio: i.producto.precio, cantidad: i.cantidad })),
+      items: items.map((i) => ({
+        nombre: i.producto.nombre,
+        precio: i.producto.precio,
+        cantidad: i.cantidad,
+      })),
       total,
     });
     return error ? error.message : null;

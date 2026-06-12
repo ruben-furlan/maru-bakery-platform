@@ -54,7 +54,9 @@ import { LogoComponent } from '../shared/logo.component';
           </button>
         </form>
 
-        <a routerLink="/" class="mt-6 block text-center text-sm text-cacao/60 hover:text-cacao">← Volver al sitio</a>
+        <a routerLink="/" class="mt-6 block text-center text-sm text-cacao/60 hover:text-cacao"
+          >← Volver al sitio</a
+        >
       </div>
     </div>
   `,

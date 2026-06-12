@@ -9,7 +9,8 @@ import { TestimonialsService } from '../core/testimonials.service';
   template: `
     <h1 class="text-2xl text-bordo">Testimonios</h1>
     <p class="mt-1 text-sm text-cacao/60">
-      Comentarios de clientes que se muestran en la landing. Solo los marcados como visibles aparecen en el sitio.
+      Comentarios de clientes que se muestran en la landing. Solo los marcados como visibles
+      aparecen en el sitio.
     </p>
 
     @if (mensaje(); as msg) {
@@ -20,16 +21,29 @@ import { TestimonialsService } from '../core/testimonials.service';
     }
 
     <!-- Alta de testimonio -->
-    <form class="mt-6 max-w-2xl space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6" (ngSubmit)="crear()">
+    <form
+      class="mt-6 max-w-2xl space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6"
+      (ngSubmit)="crear()"
+    >
       <h2 class="text-lg text-bordo">Agregar testimonio</h2>
       <div class="grid gap-4 sm:grid-cols-[1fr_auto]">
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Nombre del cliente</span>
-          <input type="text" name="nombre" [(ngModel)]="nombre" required class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="nombre"
+            required
+            class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+          />
         </label>
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Estrellas</span>
-          <select name="estrellas" [(ngModel)]="estrellas" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5 sm:w-auto">
+          <select
+            name="estrellas"
+            [(ngModel)]="estrellas"
+            class="w-full rounded-xl border border-cacao/20 px-4 py-2.5 sm:w-auto"
+          >
             @for (n of [5, 4, 3, 2, 1]; track n) {
               <option [value]="n">{{ '★'.repeat(n) }}</option>
             }
@@ -59,7 +73,10 @@ import { TestimonialsService } from '../core/testimonials.service';
     <!-- Listado -->
     <ul class="mt-8 max-w-2xl space-y-3">
       @for (testimonio of servicio.testimonios(); track testimonio.id) {
-        <li class="rounded-vitrina bg-white p-4 shadow-bordo sm:p-5" [class.opacity-60]="!testimonio.visible">
+        <li
+          class="rounded-vitrina bg-white p-4 shadow-bordo sm:p-5"
+          [class.opacity-60]="!testimonio.visible"
+        >
           <div class="flex flex-wrap items-center justify-between gap-2">
             <p class="font-display font-bold text-bordo">{{ testimonio.nombre }}</p>
             <span class="text-sm text-dorado">{{ '★'.repeat(testimonio.estrellas) }}</span>
@@ -84,7 +101,9 @@ import { TestimonialsService } from '../core/testimonials.service';
         </li>
       } @empty {
         @if (!servicio.cargando()) {
-          <li class="rounded-vitrina bg-white p-6 text-center text-cacao/60 shadow-bordo">Todavía no hay testimonios cargados.</li>
+          <li class="rounded-vitrina bg-white p-6 text-center text-cacao/60 shadow-bordo">
+            Todavía no hay testimonios cargados.
+          </li>
         }
       }
     </ul>

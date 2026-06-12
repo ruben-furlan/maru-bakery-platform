@@ -18,7 +18,10 @@ import { RevealDirective } from '../shared/reveal.directive';
             <span class="block h-10 w-10 text-crema"><app-logo /></span>
             <span class="leading-none">
               <span class="font-script text-2xl">Marü</span>
-              <span class="block font-display text-[0.65rem] uppercase tracking-[0.35em] text-dorado">Bakery</span>
+              <span
+                class="block font-display text-[0.65rem] uppercase tracking-[0.35em] text-dorado"
+                >Bakery</span
+              >
             </span>
           </div>
           <p class="mt-4 max-w-xs text-sm text-crema/70">{{ textos.textos().eslogan }}.</p>
@@ -46,7 +49,9 @@ import { RevealDirective } from '../shared/reveal.directive';
               </a>
             </li>
             <li>
-              <a [href]="'mailto:' + textos.textos().email" class="nav-link">{{ textos.textos().email }}</a>
+              <a [href]="'mailto:' + textos.textos().email" class="nav-link">{{
+                textos.textos().email
+              }}</a>
             </li>
             <li>{{ textos.textos().direccion }}</li>
           </ul>
@@ -109,9 +114,13 @@ import { RevealDirective } from '../shared/reveal.directive';
         </div>
       </div>
 
-      <div class="mx-auto mt-12 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-crema/10 px-4 pt-6 text-xs text-crema/50 sm:flex-row lg:px-8">
+      <div
+        class="mx-auto mt-12 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-crema/10 px-4 pt-6 text-xs text-crema/50 sm:flex-row lg:px-8"
+      >
         <p>© {{ anio }} Marü Bakery · Montevideo, Uruguay</p>
-        <a routerLink="/admin" class="transition-colors hover:text-crema/80">⚙ Acceso administración</a>
+        <a routerLink="/admin" class="transition-colors hover:text-crema/80"
+          >⚙ Acceso administración</a
+        >
       </div>
     </footer>
   `,

@@ -13,9 +13,20 @@ import { TiltDirective } from '../shared/tilt.directive';
     <section id="nosotros" class="relative overflow-hidden py-16 lg:py-24">
       <!-- Profundidad de fondo -->
       <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-        <span [appParallax]="0.25" class="absolute -right-24 top-10 h-72 w-72 rounded-full bg-dorado/15 blur-3xl"></span>
-        <span [appParallax]="-0.2" class="absolute -left-20 bottom-1/4 h-64 w-64 rounded-full bg-bordo/10 blur-3xl"></span>
-        <span [appParallax]="0.35" [parallaxMovil]="true" class="flotante-lento absolute left-[15%] top-24 text-xl text-dorado/50">✦</span>
+        <span
+          [appParallax]="0.25"
+          class="absolute -right-24 top-10 h-72 w-72 rounded-full bg-dorado/15 blur-3xl"
+        ></span>
+        <span
+          [appParallax]="-0.2"
+          class="absolute -left-20 bottom-1/4 h-64 w-64 rounded-full bg-bordo/10 blur-3xl"
+        ></span>
+        <span
+          [appParallax]="0.35"
+          [parallaxMovil]="true"
+          class="flotante-lento absolute left-[15%] top-24 text-xl text-dorado/50"
+          >✦</span
+        >
       </div>
 
       <div class="relative mx-auto max-w-6xl px-4 lg:px-8">
@@ -23,8 +34,8 @@ import { TiltDirective } from '../shared/tilt.directive';
           <p class="font-script text-2xl text-dorado">Dulce evidencia</p>
           <h2 class="mt-1 text-3xl text-bordo sm:text-4xl">Lo que dicen nuestros clientes</h2>
           <p class="mx-auto mt-3 max-w-2xl text-cacao/70">
-            Marü Bakery nace en una cocina de Montevideo, de la mano de una pastelera que cree que lo casero no se negocia.
-            Esto es lo que cuentan quienes ya probaron.
+            Marü Bakery nace en una cocina de Montevideo, de la mano de una pastelera que cree que
+            lo casero no se negocia. Esto es lo que cuentan quienes ya probaron.
           </p>
         </div>
 
@@ -57,17 +68,24 @@ import { TiltDirective } from '../shared/tilt.directive';
                 >
                   “
                 </span>
-                <p class="text-sm text-dorado" [attr.aria-label]="testimonio.estrellas + ' de 5 estrellas'">
+                <p
+                  class="text-sm text-dorado"
+                  [attr.aria-label]="testimonio.estrellas + ' de 5 estrellas'"
+                >
                   <span aria-hidden="true">{{ estrellas(testimonio.estrellas) }}</span>
                 </p>
                 <blockquote class="mt-2 flex-1 text-sm leading-relaxed text-cacao/80">
                   {{ testimonio.comentario }}
                 </blockquote>
-                <figcaption class="mt-4 font-script text-lg text-bordo">— {{ testimonio.nombre }}</figcaption>
+                <figcaption class="mt-4 font-script text-lg text-bordo">
+                  — {{ testimonio.nombre }}
+                </figcaption>
               </figure>
             </li>
           } @empty {
-            <li class="w-full text-center text-cacao/60">Pronto vas a leer acá lo que opinan nuestros clientes 💬</li>
+            <li class="w-full text-center text-cacao/60">
+              Pronto vas a leer acá lo que opinan nuestros clientes 💬
+            </li>
           }
         </ul>
 
