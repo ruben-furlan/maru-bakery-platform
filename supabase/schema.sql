@@ -27,7 +27,9 @@ create table if not exists public.textos_sitio (
 );
 
 -- ---------------------------------------------------------------------
--- Tabla: pedidos (consultas recibidas desde la landing)
+-- Tabla: pedidos (pedidos del carrito y consultas desde la landing)
+-- Las consultas simples solo completan nombre/contacto/mensaje; los
+-- pedidos del carrito completan además los campos de checkout e items.
 -- ---------------------------------------------------------------------
 create table if not exists public.pedidos (
   id uuid primary key default gen_random_uuid(),
@@ -36,7 +38,17 @@ create table if not exists public.pedidos (
   mensaje text not null,
   producto text,
   estado text not null default 'pendiente',
-  creado_en timestamptz not null default now()
+  creado_en timestamptz not null default now(),
+  apellido text,
+  email text,
+  telefono text,
+  entrega text check (entrega in ('envio', 'punto_encuentro')),
+  direccion text,
+  pago text check (pago in ('transferencia', 'efectivo')),
+  fecha_entrega date,
+  preferencias text,
+  items jsonb,
+  total numeric check (total >= 0)
 );
 
 -- ---------------------------------------------------------------------

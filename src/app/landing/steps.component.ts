@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { SiteTextsService } from '../core/site-texts.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RevealDirective } from '../shared/reveal.directive';
 
 @Component({
@@ -34,9 +33,7 @@ import { RevealDirective } from '../shared/reveal.directive';
 
         <div appReveal class="mt-12 text-center">
           <a
-            [href]="whatsApp()"
-            target="_blank"
-            rel="noopener"
+            href="#productos"
             class="inline-block rounded-full bg-dorado px-8 py-3.5 font-bold text-cacao transition-transform duration-300 hover:-translate-y-1 hover:shadow-bordo-lg"
           >
             Empezar mi pedido
@@ -47,30 +44,24 @@ import { RevealDirective } from '../shared/reveal.directive';
   `,
 })
 export class StepsComponent {
-  private readonly textos = inject(SiteTextsService);
-
   readonly pasos = [
     {
       numero: 1,
-      icono: '🧁',
-      titulo: 'Elegí tu antojo',
-      detalle: 'Recorré la vitrina y elegí entre tortas, postres, box dulces o una torta personalizada a tu medida.',
+      icono: '🧺',
+      titulo: 'Armá tu pedido',
+      detalle: 'Recorré la vitrina y agregá al carrito tus tortas, postres o box dulces favoritos.',
     },
     {
       numero: 2,
-      icono: '💬',
-      titulo: 'Escribinos por WhatsApp',
-      detalle: 'Contanos qué querés, para cuándo y para cuántas personas. Te confirmamos precio y fecha al toque.',
+      icono: '📋',
+      titulo: 'Completá tus datos',
+      detalle: 'Contanos cómo lo recibís, cómo pagás y para qué día lo querés. Te llega el resumen por correo.',
     },
     {
       numero: 3,
       icono: '🎀',
       titulo: 'Recibilo fresquito',
-      detalle: 'Horneamos todo el mismo día. Coordinamos la entrega en Montevideo o el retiro donde te quede cómodo.',
+      detalle: 'Horneamos todo el mismo día. Te lo llevamos a tu casa o lo coordinamos en un punto de encuentro.',
     },
   ];
-
-  whatsApp(): string {
-    return this.textos.whatsAppConMensaje('¡Hola Marü Bakery! Quiero empezar un pedido 🎂');
-  }
 }

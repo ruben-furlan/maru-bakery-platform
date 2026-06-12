@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { CartService } from '../core/cart.service';
 import { Producto } from '../core/models';
 import { ProductsService } from '../core/products.service';
-import { SiteTextsService } from '../core/site-texts.service';
 import { RevealDirective } from '../shared/reveal.directive';
 
 @Component({
@@ -15,7 +15,7 @@ import { RevealDirective } from '../shared/reveal.directive';
         <p class="font-script text-2xl text-dorado">La vitrina</p>
         <h2 class="mt-1 text-3xl text-bordo sm:text-4xl">Dulces que enamoran</h2>
         <p class="mx-auto mt-3 max-w-xl text-cacao/70">
-          Todo se hace por encargo, con ingredientes de verdad y mucho cariño. Elegí tu favorito y encargalo por WhatsApp.
+          Todo se hace por encargo, con ingredientes de verdad y mucho cariño. Agregá tus favoritos al pedido y completá tus datos.
         </p>
       </div>
 
@@ -45,14 +45,14 @@ import { RevealDirective } from '../shared/reveal.directive';
                   <span class="font-display text-lg font-bold text-cacao">
                     {{ producto.precio | currency: 'UYU' : '$ ' : '1.0-0' }}
                   </span>
-                  <a
-                    [href]="linkEncargo(producto)"
-                    target="_blank"
-                    rel="noopener"
-                    class="rounded-full bg-bordo px-5 py-2 text-sm font-bold text-crema transition-transform duration-300 hover:-translate-y-0.5 hover:bg-bordo-dark"
+                  <button
+                    type="button"
+                    (click)="agregar(producto)"
+                    class="rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5"
+                    [class]="recienAgregado() === producto.id ? 'bg-dorado text-cacao' : 'bg-bordo text-crema hover:bg-bordo-dark'"
                   >
-                    Encargar
-                  </a>
+                    {{ recienAgregado() === producto.id ? '✓ Agregado' : 'Agregar' }}
+                  </button>
                 </div>
               </div>
             </article>
@@ -65,11 +65,18 @@ import { RevealDirective } from '../shared/reveal.directive';
   `,
 })
 export class ShowcaseComponent {
-  private readonly textos = inject(SiteTextsService);
+  private readonly carrito = inject(CartService);
 
   readonly productos = inject(ProductsService).disponibles;
 
-  linkEncargo(producto: Producto): string {
-    return this.textos.whatsAppConMensaje(`¡Hola Marü Bakery! Quiero encargar: ${producto.nombre} 🍰`);
+  /** Id del último producto agregado, para el feedback "✓ Agregado". */
+  readonly recienAgregado = signal<string | null>(null);
+  private temporizador: ReturnType<typeof setTimeout> | null = null;
+
+  agregar(producto: Producto): void {
+    this.carrito.agregar(producto);
+    this.recienAgregado.set(producto.id);
+    if (this.temporizador) clearTimeout(this.temporizador);
+    this.temporizador = setTimeout(() => this.recienAgregado.set(null), 1500);
   }
 }

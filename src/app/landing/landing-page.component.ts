@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CartComponent } from './cart.component';
 import { FooterComponent } from './footer.component';
 import { HeaderComponent } from './header.component';
 import { HeroComponent } from './hero.component';
@@ -20,6 +21,7 @@ import { StepsComponent } from './steps.component';
     InstagramComponent,
     FooterComponent,
     MobileNavComponent,
+    CartComponent,
   ],
   template: `
     <app-header />
@@ -32,6 +34,7 @@ import { StepsComponent } from './steps.component';
     </main>
     <app-footer />
     <app-mobile-nav />
+    <app-cart />
   `,
 })
 export class LandingPageComponent {}

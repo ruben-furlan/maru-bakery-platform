@@ -29,12 +29,10 @@ import { RevealDirective } from '../shared/reveal.directive';
               Ver la vitrina
             </a>
             <a
-              [href]="whatsAppEncargo()"
-              target="_blank"
-              rel="noopener"
+              href="#como-encargar"
               class="rounded-full border-2 border-dorado px-7 py-3.5 font-bold text-dorado transition-transform duration-300 hover:-translate-y-1 hover:bg-dorado hover:text-cacao"
             >
-              Encargar por WhatsApp
+              ¿Cómo encargar?
             </a>
           </div>
         </div>
@@ -85,8 +83,4 @@ export class HeroComponent {
 
   readonly esloganPrincipio = computed(() => this.partes()[0]);
   readonly esloganFinal = computed(() => this.partes()[1]);
-
-  whatsAppEncargo(): string {
-    return this.textos.whatsAppConMensaje('¡Hola Marü Bakery! Quiero encargar algo rico 🧁');
-  }
 }

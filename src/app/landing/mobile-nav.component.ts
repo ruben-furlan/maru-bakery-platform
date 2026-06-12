@@ -1,24 +1,27 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { SiteTextsService } from '../core/site-texts.service';
+import { CartService } from '../core/cart.service';
 
 @Component({
   selector: 'app-mobile-nav',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- Botón flotante de WhatsApp -->
-    <a
-      [href]="whatsApp()"
-      target="_blank"
-      rel="noopener"
-      aria-label="Escribinos por WhatsApp"
-      class="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-bordo-lg transition-transform duration-300 hover:-translate-y-1 md:bottom-6 md:right-6"
+    <!-- Botón flotante del carrito -->
+    <button
+      type="button"
+      (click)="carrito.abrir()"
+      aria-label="Ver mi pedido"
+      class="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-bordo text-2xl text-crema shadow-bordo-lg transition-transform duration-300 hover:-translate-y-1 md:bottom-6 md:right-6"
     >
-      <svg viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7" aria-hidden="true">
-        <path
-          d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.4-3c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7a11 11 0 0 0 4.2 3.7c.6.3 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.5-.3Z"
-        />
-      </svg>
-    </a>
+      🧺
+      @if (carrito.cantidadTotal() > 0) {
+        <span
+          class="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-dorado px-1.5 text-xs font-bold text-cacao"
+          aria-live="polite"
+        >
+          {{ carrito.cantidadTotal() }}
+        </span>
+      }
+    </button>
 
     <!-- Barra inferior fija (solo mobile) -->
     <nav
@@ -39,15 +42,14 @@ import { SiteTextsService } from '../core/site-texts.service';
           </a>
         </li>
         <li>
-          <a
-            [href]="whatsApp()"
-            target="_blank"
-            rel="noopener"
-            class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-bold text-bordo"
+          <button
+            type="button"
+            (click)="carrito.abrir()"
+            class="flex w-full flex-col items-center gap-0.5 py-2.5 text-xs font-bold text-bordo"
           >
-            <span class="text-lg" aria-hidden="true">💬</span>
-            Encargar
-          </a>
+            <span class="text-lg" aria-hidden="true">🧺</span>
+            Mi pedido
+          </button>
         </li>
         <li>
           <a href="#contacto" class="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-cacao/80">
@@ -60,9 +62,5 @@ import { SiteTextsService } from '../core/site-texts.service';
   `,
 })
 export class MobileNavComponent {
-  private readonly textos = inject(SiteTextsService);
-
-  whatsApp(): string {
-    return this.textos.whatsAppConMensaje('¡Hola Marü Bakery! Quiero hacer un pedido 🍰');
-  }
+  readonly carrito = inject(CartService);
 }

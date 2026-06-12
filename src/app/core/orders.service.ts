@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Pedido } from './models';
+import { DatosCheckout, ItemCarrito, Pedido } from './models';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +19,31 @@ export class OrdersService {
       contacto: pedido.contacto,
       mensaje: pedido.mensaje,
       producto: pedido.producto,
+    });
+    return error ? error.message : null;
+  }
+
+  /** Registra un pedido completo armado desde el carrito de la landing. */
+  async enviarPedidoCarrito(datos: DatosCheckout, items: ItemCarrito[]): Promise<string | null> {
+    const client = this.supabase.client;
+    if (!client) return 'Supabase no está configurado.';
+
+    const total = items.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
+    const { error } = await client.from('pedidos').insert({
+      nombre: datos.nombre,
+      apellido: datos.apellido,
+      email: datos.email,
+      telefono: datos.telefono,
+      contacto: datos.telefono,
+      mensaje: datos.preferencias,
+      producto: items.map((i) => `${i.producto.nombre} x${i.cantidad}`).join(', '),
+      entrega: datos.entrega,
+      direccion: datos.direccion || null,
+      pago: datos.pago,
+      fecha_entrega: datos.fecha_entrega,
+      preferencias: datos.preferencias || null,
+      items: items.map((i) => ({ nombre: i.producto.nombre, precio: i.producto.precio, cantidad: i.cantidad })),
+      total,
     });
     return error ? error.message : null;
   }

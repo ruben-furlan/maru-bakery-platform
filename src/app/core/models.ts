@@ -22,6 +22,46 @@ export interface Pedido {
   producto: string | null;
   estado?: string;
   creado_en?: string;
+  // Campos del pedido con carrito (null en consultas simples del footer)
+  apellido?: string | null;
+  email?: string | null;
+  telefono?: string | null;
+  entrega?: TipoEntrega | null;
+  direccion?: string | null;
+  pago?: TipoPago | null;
+  fecha_entrega?: string | null;
+  preferencias?: string | null;
+  items?: ItemPedido[] | null;
+  total?: number | null;
+}
+
+export type TipoEntrega = 'envio' | 'punto_encuentro';
+export type TipoPago = 'transferencia' | 'efectivo';
+
+/** Producto elegido dentro de un pedido (se guarda como JSON en la tabla pedidos). */
+export interface ItemPedido {
+  nombre: string;
+  precio: number;
+  cantidad: number;
+}
+
+/** Item del carrito en la landing, antes de confirmar el pedido. */
+export interface ItemCarrito {
+  producto: Producto;
+  cantidad: number;
+}
+
+/** Datos del formulario de checkout del carrito. */
+export interface DatosCheckout {
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  entrega: TipoEntrega;
+  direccion: string;
+  pago: TipoPago;
+  fecha_entrega: string;
+  preferencias: string;
 }
 
 /** Claves conocidas de la tabla textos_sitio. */

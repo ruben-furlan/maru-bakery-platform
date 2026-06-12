@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { SiteTextsService } from '../core/site-texts.service';
+import { CartService } from '../core/cart.service';
 import { LogoComponent } from '../shared/logo.component';
 
 @Component({
@@ -22,14 +22,20 @@ import { LogoComponent } from '../shared/logo.component';
           <a href="#como-encargar" class="nav-link font-medium">Cómo encargar</a>
           <a href="#nosotros" class="nav-link font-medium">Nosotros</a>
           <a href="#contacto" class="nav-link font-medium">Contacto</a>
-          <a
-            [href]="whatsAppPedido()"
-            target="_blank"
-            rel="noopener"
-            class="rounded-full bg-dorado px-5 py-2.5 font-bold text-cacao transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-bordo-lg"
+          <button
+            type="button"
+            (click)="carrito.abrir()"
+            class="relative rounded-full bg-dorado px-5 py-2.5 font-bold text-cacao transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-bordo-lg"
           >
-            Hacer pedido
-          </a>
+            🧺 Mi pedido
+            @if (carrito.cantidadTotal() > 0) {
+              <span
+                class="absolute -right-1.5 -top-1.5 flex h-6 min-w-6 items-center justify-center rounded-full bg-crema px-1.5 text-xs font-bold text-bordo shadow-bordo"
+              >
+                {{ carrito.cantidadTotal() }}
+              </span>
+            }
+          </button>
         </nav>
 
         <!-- Hamburguesa animada (mobile) -->
@@ -72,15 +78,13 @@ import { LogoComponent } from '../shared/logo.component';
             <li><a href="#nosotros" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Nosotros</a></li>
             <li><a href="#contacto" class="block py-2.5 font-medium" (click)="menuAbierto.set(false)">Contacto</a></li>
             <li class="pt-2">
-              <a
-                [href]="whatsAppPedido()"
-                target="_blank"
-                rel="noopener"
-                class="block rounded-full bg-dorado px-5 py-3 text-center font-bold text-cacao"
-                (click)="menuAbierto.set(false)"
+              <button
+                type="button"
+                class="block w-full rounded-full bg-dorado px-5 py-3 text-center font-bold text-cacao"
+                (click)="menuAbierto.set(false); carrito.abrir()"
               >
-                Hacer pedido
-              </a>
+                🧺 Mi pedido
+              </button>
             </li>
           </ul>
         </nav>
@@ -89,11 +93,7 @@ import { LogoComponent } from '../shared/logo.component';
   `,
 })
 export class HeaderComponent {
-  private readonly textos = inject(SiteTextsService);
+  readonly carrito = inject(CartService);
 
   readonly menuAbierto = signal(false);
-
-  whatsAppPedido(): string {
-    return this.textos.whatsAppConMensaje('¡Hola Marü Bakery! Quiero hacer un pedido 🍰');
-  }
 }
