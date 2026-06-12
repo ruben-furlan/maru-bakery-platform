@@ -8,11 +8,13 @@ import { MarqueeComponent } from './marquee.component';
 import { MobileNavComponent } from './mobile-nav.component';
 import { ShowcaseComponent } from './showcase.component';
 import { StepsComponent } from './steps.component';
+import { ScrollProgressComponent } from '../shared/scroll-progress.component';
 
 @Component({
   selector: 'app-landing-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ScrollProgressComponent,
     HeaderComponent,
     HeroComponent,
     MarqueeComponent,
@@ -24,6 +26,7 @@ import { StepsComponent } from './steps.component';
     CartComponent,
   ],
   template: `
+    <app-scroll-progress />
     <app-header />
     <main>
       <app-hero />

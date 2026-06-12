@@ -56,9 +56,64 @@ h4 {
     transform 0.7s ease;
 }
 
+/* Variante 3D: la tarjeta "se levanta" desde el plano de la mesa */
+.reveal-3d {
+  transform: perspective(1000px) translateY(48px) rotateX(12deg) scale(0.97);
+  transform-origin: 50% 100%;
+}
+
 .reveal.reveal-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+/* ---- Tarjetas con tilt 3D (ver TiltDirective) ---- */
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(243, 227, 188, 0.45) 0%,
+    rgba(227, 185, 112, 0.15) 35%,
+    transparent 65%
+  );
+}
+
+.tilt-card:hover .tilt-glare {
+  opacity: 1;
+}
+
+/* ---- Decoración flotante de fondo (con parallax) ---- */
+@keyframes flotar {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+
+.flotante {
+  animation: flotar 7s ease-in-out infinite;
+}
+
+.flotante-lento {
+  animation: flotar 11s ease-in-out infinite;
 }
 
 /* ---- Marquee ---- */
