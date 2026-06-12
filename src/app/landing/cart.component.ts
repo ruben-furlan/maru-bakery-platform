@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../core/cart.service';
 import { TipoEntrega, TipoPago } from '../core/models';
 import { OrdersService } from '../core/orders.service';
+import { ScrollLockDirective } from '../shared/scroll-lock.directive';
 
 type Paso = 'carrito' | 'datos' | 'listo';
 
 @Component({
   selector: 'app-cart',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyPipe, FormsModule],
+  imports: [CurrencyPipe, FormsModule, ScrollLockDirective],
   template: `
     @if (carrito.abierto()) {
       <!-- Fondo oscurecido -->
@@ -18,6 +19,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
 
       <!-- Bottom sheet en mobile, panel lateral en desktop -->
       <aside
+        appScrollLock
         class="fixed inset-x-0 bottom-0 z-50 flex max-h-[92dvh] flex-col rounded-t-3xl bg-[#fdf8ec] shadow-bordo-lg md:inset-x-auto md:inset-y-0 md:right-0 md:max-h-none md:w-full md:max-w-md md:rounded-none"
         role="dialog"
         aria-modal="true"
@@ -41,7 +43,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
           </button>
         </header>
 
-        <div class="flex-1 overflow-y-auto px-5 py-4">
+        <div class="flex-1 overflow-y-auto overscroll-contain px-5 py-4">
           @switch (paso()) {
             <!-- Paso 1: items del carrito -->
             @case ('carrito') {
