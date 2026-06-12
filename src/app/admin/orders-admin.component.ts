@@ -20,7 +20,7 @@ import { OrdersService } from '../core/orders.service';
 
     <ul class="mt-6 space-y-3">
       @for (pedido of pedidos.pedidos(); track pedido.id) {
-        <li class="rounded-vitrina bg-white p-5 shadow-bordo">
+        <li class="rounded-vitrina bg-white p-4 shadow-bordo sm:p-5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <p class="font-display font-bold text-bordo">
               {{ pedido.nombre }} {{ pedido.apellido ?? '' }}
@@ -99,7 +99,7 @@ import { OrdersService } from '../core/orders.service';
                 <button
                   type="button"
                   (click)="pedidos.marcarEstado(id, 'atendido')"
-                  class="rounded-full border border-bordo px-4 py-1.5 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema"
+                  class="grow rounded-full border border-bordo px-4 py-2 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema sm:grow-0 sm:py-1.5"
                 >
                   Marcar como atendido
                 </button>
@@ -107,7 +107,7 @@ import { OrdersService } from '../core/orders.service';
               <button
                 type="button"
                 (click)="eliminar(id)"
-                class="rounded-full border border-cacao/30 px-4 py-1.5 text-sm font-bold text-cacao/70 transition-colors hover:border-bordo hover:bg-bordo/5 hover:text-bordo"
+                class="grow rounded-full border border-cacao/30 px-4 py-2 text-sm font-bold text-cacao/70 transition-colors hover:border-bordo hover:bg-bordo/5 hover:text-bordo sm:grow-0 sm:py-1.5"
               >
                 🗑 Eliminar
               </button>

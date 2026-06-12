@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CATEGORIAS, Producto } from '../core/models';
@@ -36,7 +36,7 @@ const FORMULARIO_VACIO: FormularioProducto = {
 
     <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
       <!-- Formulario alta / edición -->
-      <form class="h-fit space-y-4 rounded-vitrina bg-white p-6 shadow-bordo" (ngSubmit)="guardar()">
+      <form #formulario class="h-fit scroll-mt-10 space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6 md:scroll-mt-0" (ngSubmit)="guardar()">
         <h2 class="text-lg text-bordo">{{ editandoId() ? 'Editar producto' : 'Nuevo producto' }}</h2>
 
         <label class="block">
@@ -81,7 +81,7 @@ const FORMULARIO_VACIO: FormularioProducto = {
           <p class="rounded-xl bg-bordo/10 p-3 text-sm text-bordo" role="alert">{{ error() }}</p>
         }
 
-        <div class="flex gap-3">
+        <div class="flex flex-col gap-3 sm:flex-row">
           <button
             type="submit"
             [disabled]="guardando()"
@@ -100,7 +100,7 @@ const FORMULARIO_VACIO: FormularioProducto = {
       <!-- Listado -->
       <ul class="space-y-3">
         @for (producto of productos.productos(); track producto.id) {
-          <li class="flex items-center gap-4 rounded-vitrina bg-white p-4 shadow-bordo">
+          <li class="flex flex-wrap items-center gap-3 rounded-vitrina bg-white p-4 shadow-bordo sm:gap-4">
             <img [src]="producto.imagen_url" [alt]="producto.nombre" class="h-16 w-16 shrink-0 rounded-xl object-cover" />
             <div class="min-w-0 flex-1">
               <p class="truncate font-display font-bold text-bordo">
@@ -114,14 +114,18 @@ const FORMULARIO_VACIO: FormularioProducto = {
                 {{ producto.disponible ? 'Disponible' : 'No disponible' }}
               </p>
             </div>
-            <div class="flex shrink-0 gap-2">
-              <button type="button" (click)="editar(producto)" class="rounded-full border border-cacao/30 px-4 py-1.5 text-sm font-bold">
+            <div class="flex w-full shrink-0 gap-2 sm:w-auto">
+              <button
+                type="button"
+                (click)="editar(producto)"
+                class="flex-1 rounded-full border border-cacao/30 px-4 py-2 text-sm font-bold sm:flex-none sm:py-1.5"
+              >
                 Editar
               </button>
               <button
                 type="button"
                 (click)="eliminar(producto)"
-                class="rounded-full border border-bordo/40 px-4 py-1.5 text-sm font-bold text-bordo"
+                class="flex-1 rounded-full border border-bordo/40 px-4 py-2 text-sm font-bold text-bordo sm:flex-none sm:py-1.5"
               >
                 Eliminar
               </button>
@@ -140,6 +144,8 @@ export class ProductsAdminComponent {
 
   form: FormularioProducto = { ...FORMULARIO_VACIO };
   private archivoImagen: File | null = null;
+
+  private readonly formulario = viewChild.required<ElementRef<HTMLFormElement>>('formulario');
 
   readonly editandoId = signal<string | null>(null);
   readonly guardando = signal(false);
@@ -166,6 +172,8 @@ export class ProductsAdminComponent {
       disponible: producto.disponible,
     };
     this.mensaje.set(null);
+    // En mobile el formulario queda arriba del listado, fuera de la vista
+    this.formulario().nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   cancelarEdicion(): void {

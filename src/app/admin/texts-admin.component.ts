@@ -15,7 +15,7 @@ import { SiteTextsService } from '../core/site-texts.service';
       <p class="mt-4 rounded-xl bg-dorado/20 p-3 text-sm text-cacao" role="status">{{ msg }}</p>
     }
 
-    <form class="mt-6 max-w-2xl space-y-5 rounded-vitrina bg-white p-6 shadow-bordo" (ngSubmit)="guardar()">
+    <form class="mt-6 max-w-2xl space-y-5 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6" (ngSubmit)="guardar()">
       <label class="block">
         <span class="mb-1 block text-sm font-bold">Eslogan (titular del hero)</span>
         <input type="text" name="eslogan" [(ngModel)]="form.eslogan" required class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
@@ -91,7 +91,7 @@ import { SiteTextsService } from '../core/site-texts.service';
       <button
         type="submit"
         [disabled]="guardando()"
-        class="rounded-full bg-bordo px-6 py-2.5 font-bold text-crema transition-colors hover:bg-bordo-dark disabled:opacity-60"
+        class="w-full rounded-full bg-bordo px-6 py-2.5 font-bold text-crema transition-colors hover:bg-bordo-dark disabled:opacity-60 sm:w-auto"
       >
         {{ guardando() ? 'Guardando…' : 'Guardar textos' }}
       </button>

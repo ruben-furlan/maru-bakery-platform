@@ -20,7 +20,7 @@ import { TestimonialsService } from '../core/testimonials.service';
     }
 
     <!-- Alta de testimonio -->
-    <form class="mt-6 max-w-2xl space-y-4 rounded-vitrina bg-white p-6 shadow-bordo" (ngSubmit)="crear()">
+    <form class="mt-6 max-w-2xl space-y-4 rounded-vitrina bg-white p-5 shadow-bordo sm:p-6" (ngSubmit)="crear()">
       <h2 class="text-lg text-bordo">Agregar testimonio</h2>
       <div class="grid gap-4 sm:grid-cols-[1fr_auto]">
         <label class="block">
@@ -29,7 +29,7 @@ import { TestimonialsService } from '../core/testimonials.service';
         </label>
         <label class="block">
           <span class="mb-1 block text-sm font-bold">Estrellas</span>
-          <select name="estrellas" [(ngModel)]="estrellas" class="rounded-xl border border-cacao/20 px-4 py-2.5">
+          <select name="estrellas" [(ngModel)]="estrellas" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5 sm:w-auto">
             @for (n of [5, 4, 3, 2, 1]; track n) {
               <option [value]="n">{{ '★'.repeat(n) }}</option>
             }
@@ -50,7 +50,7 @@ import { TestimonialsService } from '../core/testimonials.service';
       <button
         type="submit"
         [disabled]="guardando()"
-        class="rounded-full bg-bordo px-6 py-2.5 font-bold text-crema transition-colors hover:bg-bordo-dark disabled:opacity-60"
+        class="w-full rounded-full bg-bordo px-6 py-2.5 font-bold text-crema transition-colors hover:bg-bordo-dark disabled:opacity-60 sm:w-auto"
       >
         {{ guardando() ? 'Guardando…' : 'Agregar testimonio' }}
       </button>
@@ -59,7 +59,7 @@ import { TestimonialsService } from '../core/testimonials.service';
     <!-- Listado -->
     <ul class="mt-8 max-w-2xl space-y-3">
       @for (testimonio of servicio.testimonios(); track testimonio.id) {
-        <li class="rounded-vitrina bg-white p-5 shadow-bordo" [class.opacity-60]="!testimonio.visible">
+        <li class="rounded-vitrina bg-white p-4 shadow-bordo sm:p-5" [class.opacity-60]="!testimonio.visible">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <p class="font-display font-bold text-bordo">{{ testimonio.nombre }}</p>
             <span class="text-sm text-dorado">{{ '★'.repeat(testimonio.estrellas) }}</span>
@@ -69,14 +69,14 @@ import { TestimonialsService } from '../core/testimonials.service';
             <button
               type="button"
               (click)="alternarVisible(testimonio.id, !testimonio.visible)"
-              class="rounded-full border border-bordo px-4 py-1.5 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema"
+              class="grow rounded-full border border-bordo px-4 py-2 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema sm:grow-0 sm:py-1.5"
             >
               {{ testimonio.visible ? 'Ocultar de la landing' : 'Mostrar en la landing' }}
             </button>
             <button
               type="button"
               (click)="eliminar(testimonio.id)"
-              class="rounded-full border border-cacao/30 px-4 py-1.5 text-sm font-bold text-cacao/70 transition-colors hover:border-bordo hover:text-bordo"
+              class="grow rounded-full border border-cacao/30 px-4 py-2 text-sm font-bold text-cacao/70 transition-colors hover:border-bordo hover:text-bordo sm:grow-0 sm:py-1.5"
             >
               Eliminar
             </button>

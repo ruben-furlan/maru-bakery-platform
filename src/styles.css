@@ -47,6 +47,15 @@ h4 {
   border-radius: 4px;
 }
 
+/* ---- Scroll horizontal sin barra visible (nav del admin en mobile) ---- */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---- Animaciones de aparición (revelado al scroll) ---- */
 .reveal {
   opacity: 0;
