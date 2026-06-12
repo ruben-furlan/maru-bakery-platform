@@ -15,7 +15,7 @@ import { TiltDirective } from '../shared/tilt.directive';
       <div aria-hidden="true" class="pointer-events-none absolute inset-0">
         <span [appParallax]="0.25" class="absolute -right-24 top-10 h-72 w-72 rounded-full bg-dorado/15 blur-3xl"></span>
         <span [appParallax]="-0.2" class="absolute -left-20 bottom-1/4 h-64 w-64 rounded-full bg-bordo/10 blur-3xl"></span>
-        <span [appParallax]="0.35" class="flotante-lento absolute left-[15%] top-24 text-xl text-dorado/50">✦</span>
+        <span [appParallax]="0.35" [parallaxMovil]="true" class="flotante-lento absolute left-[15%] top-24 text-xl text-dorado/50">✦</span>
       </div>
 
       <div class="relative mx-auto max-w-6xl px-4 lg:px-8">

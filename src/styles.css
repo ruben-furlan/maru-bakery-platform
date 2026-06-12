@@ -174,6 +174,38 @@ h4 {
   }
 }
 
+/*
+ * Cover flow en táctiles: la tarjeta interior (no el <li>, cuya área de snap
+ * no debe moverse) entra girada desde el borde y se endereza al llegar al
+ * centro. Animación ligada al scroll en CSS puro: corre en el compositor y
+ * no puede trabar el deslizamiento. Los navegadores sin soporte la ignoran.
+ */
+@supports (animation-timeline: view()) {
+  @media (hover: none), (pointer: coarse) {
+    @media (prefers-reduced-motion: no-preference) {
+      .vitrina-scroll > li > :first-child {
+        animation-name: coverflow;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view(x);
+      }
+    }
+  }
+}
+
+@keyframes coverflow {
+  0% {
+    transform: perspective(900px) rotateY(-14deg) scale(0.95);
+  }
+  38%,
+  62% {
+    transform: none;
+  }
+  100% {
+    transform: perspective(900px) rotateY(14deg) scale(0.95);
+  }
+}
+
 /* ---- Respeto a prefers-reduced-motion ---- */
 @media (prefers-reduced-motion: reduce) {
   html {

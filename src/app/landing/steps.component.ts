@@ -13,7 +13,7 @@ import { RevealDirective } from '../shared/reveal.directive';
         <span [appParallax]="0.3" class="absolute -right-28 top-0 h-80 w-80 rounded-full bg-dorado/15 blur-3xl"></span>
         <span [appParallax]="-0.25" class="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-crema/10 blur-3xl"></span>
         <span [appParallax]="0.4" class="flotante absolute left-[8%] top-20 hidden h-12 w-12 rounded-full border-2 border-dorado/25 lg:block"></span>
-        <span [appParallax]="-0.3" class="flotante-lento absolute right-[12%] bottom-24 text-xl text-dorado/40">✦</span>
+        <span [appParallax]="-0.3" [parallaxMovil]="true" class="flotante-lento absolute right-[12%] bottom-24 text-xl text-dorado/40">✦</span>
       </div>
 
       <div class="relative mx-auto max-w-6xl px-4 lg:px-8">

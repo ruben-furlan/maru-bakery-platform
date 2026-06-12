@@ -25,14 +25,17 @@ function actualizarTodas(): void {
  * sensación de profundidad. Velocidad positiva = se mueve más lento que la
  * página (parece lejano); negativa = se mueve en contra (parece cercano).
  *
- * Solo se activa en dispositivos con mouse: en táctiles el costo de animar
- * capas grandes desborda el presupuesto de frame y traba el deslizamiento,
- * así que ahí la decoración queda estática.
+ * En dispositivos con mouse se activa siempre. En táctiles solo si el
+ * elemento lo pide con parallaxMovil: animar capas grandes con blur desborda
+ * el presupuesto de frame de un teléfono y traba el deslizamiento, así que
+ * ahí solo deben moverse las formas livianas.
  */
 @Directive({ selector: '[appParallax]' })
 export class ParallaxDirective implements OnInit, OnDestroy {
   /** Factor de velocidad. Valores útiles: -0.4 a 0.5. */
   readonly appParallax = input(0.2);
+  /** Habilita el efecto también en táctiles. Usar solo en elementos chicos y sin blur. */
+  readonly parallaxMovil = input(false);
 
   visible = false;
 
@@ -45,7 +48,7 @@ export class ParallaxDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     const prefiereReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (prefiereReducido || !conMouse || !('IntersectionObserver' in window)) return;
+    if (prefiereReducido || (!conMouse && !this.parallaxMovil()) || !('IntersectionObserver' in window)) return;
 
     const el = this.elemento.nativeElement;
     el.style.willChange = 'transform';
