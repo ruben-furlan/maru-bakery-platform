@@ -33,7 +33,7 @@ import { RevealDirective } from '../shared/reveal.directive';
       <!-- Comentarios: carrusel con scroll-snap en mobile, grilla en desktop -->
       <ul
         appReveal
-        class="vitrina-scroll -mx-4 flex snap-x gap-5 overflow-x-auto px-4 pb-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0"
+        class="vitrina-scroll -mx-4 -mt-4 flex snap-x gap-5 overflow-x-auto px-4 pb-4 pt-4 lg:mx-0 lg:mt-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pt-0"
       >
         @for (testimonio of testimonios(); track testimonio.id) {
           <li class="w-80 shrink-0 lg:w-auto">
