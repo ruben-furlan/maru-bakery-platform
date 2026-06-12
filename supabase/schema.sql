@@ -125,6 +125,11 @@ create policy "pedidos: actualizacion autenticada"
   to authenticated
   using (true);
 
+create policy "pedidos: borrado autenticado"
+  on public.pedidos for delete
+  to authenticated
+  using (true);
+
 -- testimonios
 create policy "testimonios: lectura publica"
   on public.testimonios for select

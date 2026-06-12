@@ -64,6 +64,16 @@ export class OrdersService {
     }
   }
 
+  async eliminar(id: string): Promise<string | null> {
+    const client = this.supabase.client;
+    if (!client) return 'Supabase no está configurado.';
+
+    const { error } = await client.from('pedidos').delete().eq('id', id);
+    if (error) return error.message;
+    await this.recargar();
+    return null;
+  }
+
   async marcarEstado(id: string, estado: string): Promise<string | null> {
     const client = this.supabase.client;
     if (!client) return 'Supabase no está configurado.';

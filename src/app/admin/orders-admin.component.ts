@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { OrdersService } from '../core/orders.service';
 
@@ -12,6 +12,10 @@ import { OrdersService } from '../core/orders.service';
 
     @if (pedidos.cargando()) {
       <p class="mt-6 text-cacao/60">Cargando…</p>
+    }
+
+    @if (error(); as err) {
+      <p class="mt-4 rounded-xl bg-bordo/10 p-3 text-sm text-bordo" role="alert">{{ err }}</p>
     }
 
     <ul class="mt-6 space-y-3">
@@ -89,14 +93,25 @@ import { OrdersService } from '../core/orders.service';
             <p class="mt-2 text-sm">{{ pedido.mensaje }}</p>
           }
 
-          @if (pedido.estado === 'pendiente' && pedido.id) {
-            <button
-              type="button"
-              (click)="pedidos.marcarEstado(pedido.id, 'atendido')"
-              class="mt-3 rounded-full border border-bordo px-4 py-1.5 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema"
-            >
-              Marcar como atendido
-            </button>
+          @if (pedido.id; as id) {
+            <div class="mt-3 flex flex-wrap gap-2">
+              @if (pedido.estado === 'pendiente') {
+                <button
+                  type="button"
+                  (click)="pedidos.marcarEstado(id, 'atendido')"
+                  class="rounded-full border border-bordo px-4 py-1.5 text-sm font-bold text-bordo transition-colors hover:bg-bordo hover:text-crema"
+                >
+                  Marcar como atendido
+                </button>
+              }
+              <button
+                type="button"
+                (click)="eliminar(id)"
+                class="rounded-full border border-cacao/30 px-4 py-1.5 text-sm font-bold text-cacao/70 transition-colors hover:border-bordo hover:bg-bordo/5 hover:text-bordo"
+              >
+                🗑 Eliminar
+              </button>
+            </div>
           }
         </li>
       } @empty {
@@ -110,7 +125,16 @@ import { OrdersService } from '../core/orders.service';
 export class OrdersAdminComponent implements OnInit {
   readonly pedidos = inject(OrdersService);
 
+  readonly error = signal<string | null>(null);
+
   ngOnInit(): void {
     void this.pedidos.recargar();
+  }
+
+  async eliminar(id: string): Promise<void> {
+    if (!confirm('¿Eliminar este pedido? Esta acción no se puede deshacer.')) return;
+    this.error.set(null);
+    const error = await this.pedidos.eliminar(id);
+    if (error) this.error.set(error);
   }
 }
