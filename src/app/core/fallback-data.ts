@@ -1,4 +1,4 @@
-import { Producto, TextosSitio } from './models';
+import { Producto, Testimonio, TextosSitio } from './models';
 
 /**
  * Datos de respaldo que se muestran cuando Supabase todavía no está
@@ -13,7 +13,37 @@ export const TEXTOS_FALLBACK: TextosSitio = {
   instagram: 'marubakery.uy',
   email: 'hola@marubakery.uy',
   direccion: 'Montevideo, Uruguay',
+  stat_1_numero: '+100',
+  stat_1_texto: 'pedidos entregados',
+  stat_2_numero: '5★',
+  stat_2_texto: 'de clientes felices',
+  stat_3_numero: '100%',
+  stat_3_texto: 'horneado en casa',
 };
+
+export const TESTIMONIOS_FALLBACK: Testimonio[] = [
+  {
+    id: 'fb-t1',
+    nombre: 'Lucía',
+    comentario: 'La torta de chocolate fue el centro del cumple. ¡Húmeda, intensa y hermosa! Repetimos seguro.',
+    estrellas: 5,
+    visible: true,
+  },
+  {
+    id: 'fb-t2',
+    nombre: 'Federico',
+    comentario: 'Pedí un box dulce para sorprender a mi novia y llegó impecable. Se nota lo casero en cada bocado.',
+    estrellas: 5,
+    visible: true,
+  },
+  {
+    id: 'fb-t3',
+    nombre: 'Carla',
+    comentario: 'El cheesecake de frutos rojos es de otro planeta. Atención súper cálida y entrega puntual.',
+    estrellas: 5,
+    visible: true,
+  },
+];
 
 export const PRODUCTOS_FALLBACK: Producto[] = [
   {

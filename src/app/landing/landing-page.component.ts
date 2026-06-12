@@ -3,7 +3,7 @@ import { CartComponent } from './cart.component';
 import { FooterComponent } from './footer.component';
 import { HeaderComponent } from './header.component';
 import { HeroComponent } from './hero.component';
-import { InstagramComponent } from './instagram.component';
+import { TestimonialsComponent } from './testimonials.component';
 import { MarqueeComponent } from './marquee.component';
 import { MobileNavComponent } from './mobile-nav.component';
 import { ShowcaseComponent } from './showcase.component';
@@ -18,7 +18,7 @@ import { StepsComponent } from './steps.component';
     MarqueeComponent,
     ShowcaseComponent,
     StepsComponent,
-    InstagramComponent,
+    TestimonialsComponent,
     FooterComponent,
     MobileNavComponent,
     CartComponent,
@@ -30,7 +30,7 @@ import { StepsComponent } from './steps.component';
       <app-marquee />
       <app-showcase />
       <app-steps />
-      <app-instagram />
+      <app-testimonials />
     </main>
     <app-footer />
     <app-mobile-nav />

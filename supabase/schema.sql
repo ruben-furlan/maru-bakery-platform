@@ -52,6 +52,18 @@ create table if not exists public.pedidos (
 );
 
 -- ---------------------------------------------------------------------
+-- Tabla: testimonios (comentarios de clientes para la landing)
+-- ---------------------------------------------------------------------
+create table if not exists public.testimonios (
+  id uuid primary key default gen_random_uuid(),
+  nombre text not null,
+  comentario text not null,
+  estrellas int not null default 5 check (estrellas between 1 and 5),
+  visible boolean not null default true,
+  creado_en timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------------
 -- Row Level Security
 -- Lectura pública de productos y textos; escritura solo autenticados.
 -- Pedidos: cualquiera puede crear (formulario público), solo
@@ -60,6 +72,7 @@ create table if not exists public.pedidos (
 alter table public.productos enable row level security;
 alter table public.textos_sitio enable row level security;
 alter table public.pedidos enable row level security;
+alter table public.testimonios enable row level security;
 
 -- productos
 create policy "productos: lectura publica"
@@ -112,6 +125,26 @@ create policy "pedidos: actualizacion autenticada"
   to authenticated
   using (true);
 
+-- testimonios
+create policy "testimonios: lectura publica"
+  on public.testimonios for select
+  using (true);
+
+create policy "testimonios: escritura autenticada"
+  on public.testimonios for insert
+  to authenticated
+  with check (true);
+
+create policy "testimonios: actualizacion autenticada"
+  on public.testimonios for update
+  to authenticated
+  using (true);
+
+create policy "testimonios: borrado autenticado"
+  on public.testimonios for delete
+  to authenticated
+  using (true);
+
 -- ---------------------------------------------------------------------
 -- Storage: bucket público para fotos de productos
 -- ---------------------------------------------------------------------
@@ -143,8 +176,19 @@ insert into public.textos_sitio (clave, valor) values
   ('whatsapp', '59899000000'),
   ('instagram', 'marubakery.uy'),
   ('email', 'hola@marubakery.uy'),
-  ('direccion', 'Montevideo, Uruguay')
+  ('direccion', 'Montevideo, Uruguay'),
+  ('stat_1_numero', '+100'),
+  ('stat_1_texto', 'pedidos entregados'),
+  ('stat_2_numero', '5★'),
+  ('stat_2_texto', 'de clientes felices'),
+  ('stat_3_numero', '100%'),
+  ('stat_3_texto', 'horneado en casa')
 on conflict (clave) do nothing;
+
+insert into public.testimonios (nombre, comentario, estrellas, visible) values
+  ('Lucía', 'La torta de chocolate fue el centro del cumple. ¡Húmeda, intensa y hermosa! Repetimos seguro.', 5, true),
+  ('Federico', 'Pedí un box dulce para sorprender a mi novia y llegó impecable. Se nota lo casero en cada bocado.', 5, true),
+  ('Carla', 'El cheesecake de frutos rojos es de otro planeta. Atención súper cálida y entrega puntual.', 5, true);
 
 insert into public.productos (nombre, descripcion, precio, categoria, imagen_url, disponible, destacado) values
   ('Torta de chocolate intenso', 'Bizcochuelo húmedo de cacao, ganache de chocolate semiamargo y un toque de dulce de leche.', 1450, 'Tortas', '/img/producto-torta.svg', true, true),

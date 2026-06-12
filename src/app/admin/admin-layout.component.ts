@@ -63,6 +63,7 @@ export class AdminLayoutComponent {
     { ruta: '/admin', titulo: 'Productos', icono: '🧁', exacto: true },
     { ruta: '/admin/destacados', titulo: 'Destacados', icono: '⭐', exacto: false },
     { ruta: '/admin/textos', titulo: 'Textos del sitio', icono: '✏️', exacto: false },
+    { ruta: '/admin/testimonios', titulo: 'Testimonios', icono: '💬', exacto: false },
     { ruta: '/admin/pedidos', titulo: 'Pedidos', icono: '📋', exacto: false },
   ];
 

@@ -53,6 +53,37 @@ import { SiteTextsService } from '../core/site-texts.service';
         </label>
       </div>
 
+      <fieldset class="space-y-3 rounded-2xl border border-dorado/40 bg-dorado/5 p-4">
+        <legend class="px-2 text-sm font-bold text-bordo">Estadísticas de la sección "Lo que dicen nuestros clientes"</legend>
+        <p class="text-xs text-cacao/60">Tres números gancho, ej: "+100" / "pedidos entregados". Dejá uno vacío para ocultarlo.</p>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 1 — número</span>
+            <input type="text" name="stat_1_numero" [(ngModel)]="form.stat_1_numero" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 1 — texto</span>
+            <input type="text" name="stat_1_texto" [(ngModel)]="form.stat_1_texto" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 2 — número</span>
+            <input type="text" name="stat_2_numero" [(ngModel)]="form.stat_2_numero" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 2 — texto</span>
+            <input type="text" name="stat_2_texto" [(ngModel)]="form.stat_2_texto" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 3 — número</span>
+            <input type="text" name="stat_3_numero" [(ngModel)]="form.stat_3_numero" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-bold">Estadística 3 — texto</span>
+            <input type="text" name="stat_3_texto" [(ngModel)]="form.stat_3_texto" class="w-full rounded-xl border border-cacao/20 px-4 py-2.5" />
+          </label>
+        </div>
+      </fieldset>
+
       @if (error()) {
         <p class="rounded-xl bg-bordo/10 p-3 text-sm text-bordo" role="alert">{{ error() }}</p>
       }

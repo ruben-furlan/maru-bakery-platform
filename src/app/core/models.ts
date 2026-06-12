@@ -72,4 +72,23 @@ export interface TextosSitio {
   instagram: string;
   email: string;
   direccion: string;
+  // Sección "Dulce evidencia": estadísticas de marketing configurables
+  stat_1_numero: string;
+  stat_1_texto: string;
+  stat_2_numero: string;
+  stat_2_texto: string;
+  stat_3_numero: string;
+  stat_3_texto: string;
 }
+
+/** Comentario de un cliente que se muestra en la landing. */
+export interface Testimonio {
+  id: string;
+  nombre: string;
+  comentario: string;
+  estrellas: number; // 1 a 5
+  visible: boolean;
+  creado_en?: string;
+}
+
+export type TestimonioNuevo = Omit<Testimonio, 'id' | 'creado_en'>;
