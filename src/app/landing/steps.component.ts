@@ -55,7 +55,7 @@ export class StepsComponent {
       numero: 2,
       icono: '📋',
       titulo: 'Completá tus datos',
-      detalle: 'Contanos cómo lo recibís, cómo pagás y para qué día lo querés. Te llega el resumen por correo.',
+      detalle: 'Contanos cómo lo recibís y cómo pagás. Te llega el resumen por correo y coordinamos juntos el día de entrega.',
     },
     {
       numero: 3,

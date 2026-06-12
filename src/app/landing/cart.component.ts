@@ -210,18 +210,15 @@ type Paso = 'carrito' | 'datos' | 'listo';
                   </div>
                 </fieldset>
 
-                <label class="block text-sm">
-                  <span class="mb-1 block font-bold text-cacao/80">Día de entrega *</span>
-                  <input
-                    type="date"
-                    name="fecha"
-                    [(ngModel)]="fechaEntrega"
-                    required
-                    [min]="fechaMinima"
-                    class="w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5"
-                  />
-                  <span class="mt-1 block text-xs text-cacao/60">Horneamos por encargo: pedinos con al menos un día de anticipación.</span>
-                </label>
+                <!-- El día de entrega no se pide: se coordina al confirmar -->
+                <div class="flex items-start gap-3 rounded-2xl border border-dorado/50 bg-dorado/10 p-4">
+                  <span class="text-2xl" aria-hidden="true">🗓️</span>
+                  <p class="text-sm leading-relaxed text-cacao/80">
+                    <span class="font-script text-base text-bordo">¿Y el día de entrega?</span><br />
+                    Cuando confirmemos tu pedido coordinamos juntos el día y la hora que mejor te quede.
+                    Horneamos todo fresquito, por encargo 💛
+                  </p>
+                </div>
 
                 <label class="block text-sm">
                   <span class="mb-1 block font-bold text-cacao/80">¿Tenés alguna preferencia? Contanos</span>
@@ -248,7 +245,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
                 <p class="mx-auto mt-3 max-w-xs text-cacao/70">
                   Recibimos tu pedido y te enviamos el resumen a
                   <strong class="text-cacao">{{ email }}</strong
-                  >. En breve nos ponemos en contacto para confirmar todo.
+                  >. En breve nos ponemos en contacto para confirmar todo y coordinar juntos el día de entrega.
                 </p>
               </div>
             }
@@ -331,11 +328,7 @@ export class CartComponent {
   entrega: TipoEntrega = 'envio';
   direccion = '';
   pago: TipoPago = 'transferencia';
-  fechaEntrega = '';
   preferencias = '';
-
-  /** Mínimo mañana: todo se hornea por encargo. */
-  readonly fechaMinima = this.calcularFechaMinima();
 
   cerrar(): void {
     this.carrito.cerrar();
@@ -363,7 +356,6 @@ export class CartComponent {
         entrega: this.entrega,
         direccion: this.direccion.trim(),
         pago: this.pago,
-        fecha_entrega: this.fechaEntrega,
         preferencias: this.preferencias.trim(),
       },
       this.carrito.items(),
@@ -384,14 +376,6 @@ export class CartComponent {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())) return 'Ingresá un correo válido.';
     if (!this.telefono.trim()) return 'Completá tu teléfono.';
     if (this.entrega === 'envio' && !this.direccion.trim()) return 'Completá la dirección de entrega.';
-    if (!this.fechaEntrega) return 'Elegí el día de entrega.';
-    if (this.fechaEntrega < this.fechaMinima) return 'Necesitamos al menos un día de anticipación.';
     return null;
-  }
-
-  private calcularFechaMinima(): string {
-    const maniana = new Date();
-    maniana.setDate(maniana.getDate() + 1);
-    return maniana.toISOString().slice(0, 10);
   }
 }

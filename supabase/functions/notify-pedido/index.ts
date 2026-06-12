@@ -64,13 +64,6 @@ function formatearFecha(iso: string): string {
   }).format(fecha);
 }
 
-/** Formatea una fecha tipo "2026-06-20" como "sábado, 20 de junio de 2026". */
-function formatearDia(fecha: string): string {
-  const dia = new Date(`${fecha}T12:00:00-03:00`);
-  if (Number.isNaN(dia.getTime())) return fecha;
-  return new Intl.DateTimeFormat('es-UY', { timeZone: 'America/Montevideo', dateStyle: 'full' }).format(dia);
-}
-
 function formatearPesos(monto: number): string {
   return `$ ${new Intl.NumberFormat('es-UY', { maximumFractionDigits: 0 }).format(monto)}`;
 }
@@ -144,7 +137,7 @@ function filasCheckout(pedido: PedidoRecord): string {
     fila('Entrega', escapeHtml(entrega)),
     pedido.direccion ? fila(pedido.entrega === 'envio' ? 'Dirección' : 'Punto', escapeHtml(pedido.direccion)) : '',
     fila('Pago', pedido.pago === 'transferencia' ? 'Transferencia' : 'Efectivo'),
-    pedido.fecha_entrega ? fila('Día de entrega', escapeHtml(formatearDia(pedido.fecha_entrega))) : '',
+    fila('Día de entrega', 'A coordinar 🗓️'),
     pedido.preferencias ? fila('Preferencias', escapeHtml(pedido.preferencias).replaceAll('\n', '<br>')) : '',
   ].join('');
 }
@@ -177,7 +170,8 @@ function htmlPedidoCliente(pedido: PedidoRecord): string {
   return envolver(`
     <h1 style="margin:0 0 6px;color:#7C0F2A;font-size:20px;">🎂 ¡Gracias por tu pedido, ${escapeHtml(pedido.nombre)}!</h1>
     <p style="margin:0 0 20px;color:#3d3d3d;font-size:15px;line-height:1.5;">
-      Recibimos tu pedido y en breve nos ponemos en contacto para confirmarlo.
+      Recibimos tu pedido y en breve nos ponemos en contacto para confirmarlo
+      y coordinar juntos el día y la hora de entrega que mejor te queden.
       Acá va el resumen:
     </p>
     ${tablaItems(pedido.items ?? [], pedido.total)}

@@ -60,7 +60,6 @@ export interface DatosCheckout {
   entrega: TipoEntrega;
   direccion: string;
   pago: TipoPago;
-  fecha_entrega: string;
   preferencias: string;
 }
 

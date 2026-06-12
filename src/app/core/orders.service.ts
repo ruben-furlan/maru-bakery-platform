@@ -40,7 +40,6 @@ export class OrdersService {
       entrega: datos.entrega,
       direccion: datos.direccion || null,
       pago: datos.pago,
-      fecha_entrega: datos.fecha_entrega,
       preferencias: datos.preferencias || null,
       items: items.map((i) => ({ nombre: i.producto.nombre, precio: i.producto.precio, cantidad: i.cantidad })),
       total,
