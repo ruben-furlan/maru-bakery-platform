@@ -57,6 +57,7 @@ export const environment = {
 
    El script `scripts/set-env.mjs` (que corre antes de `ng build`) genera
    `environment.ts` con esos valores.
+
 3. `public/_redirects` (`/* /index.html 200`) hace que las rutas de Angular
    funcionen al recargar la página.
 
@@ -151,3 +152,28 @@ supabase/
 - Contraste AA con la paleta bordó/crema, foco visible, `alt` en imágenes y navegación por teclado.
 - `prefers-reduced-motion` desactiva el marquee y las animaciones de aparición.
 - Bundle inicial ≈ 88 kB transferidos; `/admin` y Supabase se cargan de forma diferida.
+
+## 🤖 Programar con agentes de IA (Claude Code · OpenCode · Codex)
+
+El repo viene pre-configurado para las tres CLIs de agentes. Guía completa paso a
+paso en **[`docs/GUIA-IA.md`](docs/GUIA-IA.md)**; resumen de las piezas:
+
+| Pieza          | Qué hace                                                                                                                                                                                 | Dónde vive                                                               |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Contexto**   | El agente arranca conociendo stack, comandos y convenciones del repo.                                                                                                                    | `AGENTS.md` (universal) + `CLAUDE.md` (Claude Code, importa el anterior) |
+| **Subagentes** | Especialistas a los que se delega: `revisor-codigo` (revisión de diffs, solo lectura), `experto-supabase` (esquema/RLS/Edge Function) y `ui-marca` (landing, mobile, paleta, a11y).      | `.claude/agents/` y `.opencode/agent/`                                   |
+| **Skills**     | Procedimientos invocables: `/nuevo-componente`, `/pre-deploy` (checklist antes de pushear a main) y `/migracion-db`.                                                                     | `.claude/skills/` y `.opencode/command/`                                 |
+| **Hooks**      | Automatizaciones garantizadas: Prettier tras cada edición, bloqueo de comandos destructivos (force-push a main, `rm -rf`…), notificación al terminar.                                    | `.claude/settings.json` + `.claude/hooks/`                               |
+| **MCP**        | Herramientas externas: `context7` (docs actualizadas de Angular/Tailwind), `playwright` (navegador real para screenshots de la landing) y `supabase` (consultas read-only a producción). | `.mcp.json`, `opencode.json`, `docs/codex-config.example.toml`           |
+
+Inicio rápido:
+
+```bash
+npm i -g @anthropic-ai/claude-code   # o: opencode-ai / @openai/codex
+cd maru-bakery-platform
+claude                               # el contexto se carga solo
+# probá: "/pre-deploy"  o  "revisá mis cambios antes de comitear"
+```
+
+> Codex no lee config por proyecto (solo `AGENTS.md`): copiá
+> `docs/codex-config.example.toml` a `~/.codex/config.toml` para los MCP.

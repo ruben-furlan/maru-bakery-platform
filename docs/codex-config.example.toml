@@ -1,0 +1,35 @@
+# Configuración de ejemplo para OpenAI Codex CLI.
+# Codex NO lee config por proyecto: copiá/fusioná esto en ~/.codex/config.toml
+#
+#   mkdir -p ~/.codex && cp docs/codex-config.example.toml ~/.codex/config.toml
+#
+# El contexto del proyecto sí lo toma solo: Codex lee AGENTS.md automáticamente
+# al arrancar dentro de este repo.
+
+# Modo de aprobación: "untrusted" pide permiso para casi todo,
+# "on-request" deja que el agente decida cuándo pedir, "never" no pide (¡cuidado!).
+approval_policy = "on-request"
+
+# Sandbox: "read-only" | "workspace-write" (recomendado) | "danger-full-access"
+sandbox_mode = "workspace-write"
+
+# ---- Servidores MCP (los mismos que usa Claude Code en .mcp.json) ----
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+
+# Descomentá cuando tengas el token (https://supabase.com/dashboard/account/tokens):
+# [mcp_servers.supabase]
+# command = "npx"
+# args = ["-y", "@supabase/mcp-server-supabase@latest", "--read-only", "--project-ref=TU_PROJECT_REF"]
+# env = { SUPABASE_ACCESS_TOKEN = "sbp_..." }
+
+# ---- Prompts personalizados (equivalente a las skills de Claude Code) ----
+# Codex los lee de ~/.codex/prompts/*.md y se invocan con /nombre-del-archivo.
+# Podés copiar el contenido de .claude/skills/pre-deploy/SKILL.md a
+# ~/.codex/prompts/pre-deploy.md y usarlo como /pre-deploy dentro de Codex.

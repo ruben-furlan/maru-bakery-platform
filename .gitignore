@@ -41,3 +41,8 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Agentes de IA: estado local / secretos (la config compartida SI se comitea)
+.claude/settings.local.json
+.mcp.local.json
+.opencode/state/
