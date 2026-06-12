@@ -10,12 +10,12 @@ import { CartService } from '../core/cart.service';
       type="button"
       (click)="carrito.abrir()"
       aria-label="Ver mi pedido"
-      class="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-bordo text-2xl text-crema shadow-bordo-lg transition-transform duration-300 hover:-translate-y-1 md:bottom-6 md:right-6"
+      class="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-dorado text-2xl text-cacao shadow-bordo-lg ring-2 ring-crema/90 transition-transform duration-300 hover:-translate-y-1 md:bottom-6 md:right-6"
     >
       🧺
       @if (carrito.cantidadTotal() > 0) {
         <span
-          class="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-dorado px-1.5 text-xs font-bold text-cacao"
+          class="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-bordo px-1.5 text-xs font-bold text-crema"
           aria-live="polite"
         >
           {{ carrito.cantidadTotal() }}
@@ -25,7 +25,7 @@ import { CartService } from '../core/cart.service';
 
     <!-- Barra inferior fija (solo mobile) -->
     <nav
-      class="fixed inset-x-0 bottom-0 z-40 border-t border-bordo/10 bg-white/95 backdrop-blur md:hidden"
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-bordo/10 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
       aria-label="Navegación inferior"
     >
       <ul class="grid grid-cols-4">
