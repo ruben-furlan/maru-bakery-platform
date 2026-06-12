@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { CartService } from '../core/cart.service';
+import { CartService, MAX_POR_PRODUCTO } from '../core/cart.service';
 import { Producto } from '../core/models';
 import { ProductsService } from '../core/products.service';
 import { ParallaxDirective } from '../shared/parallax.directive';
@@ -55,13 +55,21 @@ import { TiltDirective } from '../shared/tilt.directive';
                     <span class="font-display text-lg font-bold text-cacao">
                       {{ producto.precio | currency: 'UYU' : '$ ' : '1.0-0' }}
                     </span>
+                    @let enMaximo = carrito.cantidadDe(producto.id) >= maxPorProducto;
                     <button
                       type="button"
                       (click)="agregar(producto)"
-                      class="rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5"
-                      [class]="recienAgregado() === producto.id ? 'bg-dorado text-cacao' : 'bg-bordo text-crema hover:bg-bordo-dark'"
+                      [disabled]="enMaximo"
+                      class="rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed"
+                      [class]="
+                        enMaximo
+                          ? 'bg-cacao/10 text-cacao/60'
+                          : recienAgregado() === producto.id
+                            ? 'bg-dorado text-cacao'
+                            : 'bg-bordo text-crema hover:bg-bordo-dark'
+                      "
                     >
-                      {{ recienAgregado() === producto.id ? '✓ Agregado' : 'Agregar' }}
+                      {{ enMaximo ? 'Máximo ' + maxPorProducto : recienAgregado() === producto.id ? '✓ Agregado' : 'Agregar' }}
                     </button>
                   </div>
                 </div>
@@ -76,7 +84,8 @@ import { TiltDirective } from '../shared/tilt.directive';
   `,
 })
 export class ShowcaseComponent {
-  private readonly carrito = inject(CartService);
+  protected readonly carrito = inject(CartService);
+  protected readonly maxPorProducto = MAX_POR_PRODUCTO;
 
   readonly productos = inject(ProductsService).disponibles;
 
@@ -85,7 +94,8 @@ export class ShowcaseComponent {
   private temporizador: ReturnType<typeof setTimeout> | null = null;
 
   agregar(producto: Producto): void {
-    this.carrito.agregar(producto);
+    // Si ya está en el máximo no hay feedback de "agregado": el botón queda deshabilitado
+    if (!this.carrito.agregar(producto)) return;
     this.recienAgregado.set(producto.id);
     if (this.temporizador) clearTimeout(this.temporizador);
     this.temporizador = setTimeout(() => this.recienAgregado.set(null), 1500);

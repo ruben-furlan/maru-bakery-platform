@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CartService } from '../core/cart.service';
+import { CartService, MAX_POR_PRODUCTO } from '../core/cart.service';
 import { TipoEntrega, TipoPago } from '../core/models';
 import { OrdersService } from '../core/orders.service';
 import { ScrollLockDirective } from '../shared/scroll-lock.directive';
@@ -90,8 +90,10 @@ type Paso = 'carrito' | 'datos' | 'listo';
                         <button
                           type="button"
                           (click)="carrito.cambiarCantidad(item.producto.id, 1)"
+                          [disabled]="item.cantidad >= maxPorProducto"
                           [attr.aria-label]="'Agregar uno de ' + item.producto.nombre"
-                          class="flex h-8 w-8 items-center justify-center rounded-full bg-bordo font-bold text-crema"
+                          [attr.title]="item.cantidad >= maxPorProducto ? 'Máximo ' + maxPorProducto + ' por producto' : null"
+                          class="flex h-8 w-8 items-center justify-center rounded-full bg-bordo font-bold text-crema disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +
                         </button>
@@ -317,6 +319,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
 })
 export class CartComponent {
   readonly carrito = inject(CartService);
+  protected readonly maxPorProducto = MAX_POR_PRODUCTO;
   private readonly pedidos = inject(OrdersService);
 
   readonly paso = signal<Paso>('carrito');
