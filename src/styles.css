@@ -163,6 +163,17 @@ h4 {
   scroll-snap-align: center;
 }
 
+/*
+ * En táctiles, los hijos del carrusel se revelan solo con fade: si el
+ * transform de entrada moviera sus áreas de snap, el snap obligatorio
+ * "pelea" contra el gesto y el deslizamiento se traba.
+ */
+@media (hover: none), (pointer: coarse) {
+  .vitrina-scroll > .reveal {
+    transform: none;
+  }
+}
+
 /* ---- Respeto a prefers-reduced-motion ---- */
 @media (prefers-reduced-motion: reduce) {
   html {
