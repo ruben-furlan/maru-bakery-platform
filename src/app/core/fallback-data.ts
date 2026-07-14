@@ -1,4 +1,4 @@
-import { Producto, Testimonio, TextosSitio } from './models';
+import { Producto, Testimonio, TextosSitio, ZonaEnvio } from './models';
 
 /**
  * Datos de respaldo que se muestran cuando Supabase todavía no está
@@ -20,6 +20,19 @@ export const TEXTOS_FALLBACK: TextosSitio = {
   stat_3_numero: '100%',
   stat_3_texto: 'horneado en casa',
 };
+
+export const ZONAS_ENVIO_FALLBACK: ZonaEnvio[] = [
+  { id: 'fb-z1', nombre: 'Centro, Cordón y Ciudad Vieja', costo: 120, activa: true, orden: 1 },
+  {
+    id: 'fb-z2',
+    nombre: 'Pocitos, Punta Carretas y Parque Rodó',
+    costo: 150,
+    activa: true,
+    orden: 2,
+  },
+  { id: 'fb-z3', nombre: 'Malvín, Buceo y La Blanqueada', costo: 180, activa: true, orden: 3 },
+  { id: 'fb-z4', nombre: 'Carrasco y alrededores', costo: 250, activa: true, orden: 4 },
+];
 
 export const TESTIMONIOS_FALLBACK: Testimonio[] = [
   {

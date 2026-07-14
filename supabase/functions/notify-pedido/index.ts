@@ -34,6 +34,8 @@ interface PedidoRecord {
   preferencias: string | null;
   items: ItemPedido[] | null;
   total: number | null;
+  zona_envio: string | null;
+  costo_envio: number | null;
 }
 
 interface WebhookPayload {
@@ -107,8 +109,13 @@ function envolver(contenido: string): string {
 </html>`;
 }
 
-/** Tabla con los productos del pedido y el total. */
-function tablaItems(items: ItemPedido[], total: number | null): string {
+/** Tabla con los productos del pedido, el envío estimado y el total. */
+function tablaItems(
+  items: ItemPedido[],
+  total: number | null,
+  costoEnvio: number | null,
+  esEnvio: boolean,
+): string {
   const filas = items
     .map(
       (item) => `<tr>
@@ -117,15 +124,23 @@ function tablaItems(items: ItemPedido[], total: number | null): string {
       </tr>`,
     )
     .join('');
+  const filaEnvio =
+    costoEnvio != null
+      ? `<tr>
+          <td style="padding:6px 0;color:#3d3d3d;">Envío aprox.</td>
+          <td style="padding:6px 0;color:#3d3d3d;text-align:right;">${formatearPesos(costoEnvio)}</td>
+        </tr>`
+      : '';
   const filaTotal =
     total != null
       ? `<tr>
-          <td style="padding:10px 0 0;color:#7C0F2A;font-weight:bold;border-top:1px solid #e6d4a8;">Total</td>
+          <td style="padding:10px 0 0;color:#7C0F2A;font-weight:bold;border-top:1px solid #e6d4a8;">${esEnvio ? 'Total estimado' : 'Total'}</td>
           <td style="padding:10px 0 0;color:#7C0F2A;font-weight:bold;text-align:right;border-top:1px solid #e6d4a8;">${formatearPesos(total)}</td>
         </tr>`
       : '';
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;margin:12px 0;">
     ${filas}
+    ${filaEnvio}
     ${filaTotal}
   </table>`;
 }
@@ -135,10 +150,18 @@ function filasCheckout(pedido: PedidoRecord): string {
   const entrega = pedido.entrega === 'envio' ? 'Envío a domicilio' : 'Punto de encuentro';
   return [
     fila('Entrega', escapeHtml(entrega)),
-    pedido.direccion ? fila(pedido.entrega === 'envio' ? 'Dirección' : 'Punto', escapeHtml(pedido.direccion)) : '',
+    pedido.zona_envio ? fila('Zona', escapeHtml(pedido.zona_envio)) : '',
+    pedido.entrega === 'envio' && pedido.costo_envio == null
+      ? fila('Costo de envío', 'A coordinar al confirmar el pedido')
+      : '',
+    pedido.direccion
+      ? fila(pedido.entrega === 'envio' ? 'Dirección' : 'Punto', escapeHtml(pedido.direccion))
+      : '',
     fila('Pago', pedido.pago === 'transferencia' ? 'Transferencia' : 'Efectivo'),
     fila('Día de entrega', 'A coordinar 🗓️'),
-    pedido.preferencias ? fila('Preferencias', escapeHtml(pedido.preferencias).replaceAll('\n', '<br>')) : '',
+    pedido.preferencias
+      ? fila('Preferencias', escapeHtml(pedido.preferencias).replaceAll('\n', '<br>'))
+      : '',
   ].join('');
 }
 
@@ -148,7 +171,7 @@ function htmlPedidoDuena(pedido: PedidoRecord): string {
   return envolver(`
     <h1 style="margin:0 0 6px;color:#7C0F2A;font-size:20px;">🧺 ¡Nuevo pedido recibido!</h1>
     <p style="margin:0 0 20px;color:#6b6b6b;font-size:13px;">${formatearFecha(pedido.creado_en)}</p>
-    ${tablaItems(pedido.items ?? [], pedido.total)}
+    ${tablaItems(pedido.items ?? [], pedido.total, pedido.costo_envio, pedido.entrega === 'envio')}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;border-top:1px solid #e6d4a8;">
       ${fila('Cliente', nombreCompleto)}
       ${fila('Email', escapeHtml(pedido.email ?? ''))}
@@ -174,7 +197,7 @@ function htmlPedidoCliente(pedido: PedidoRecord): string {
       y coordinar juntos el día y la hora de entrega que mejor te queden.
       Acá va el resumen:
     </p>
-    ${tablaItems(pedido.items ?? [], pedido.total)}
+    ${tablaItems(pedido.items ?? [], pedido.total, pedido.costo_envio, pedido.entrega === 'envio')}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;border-top:1px solid #e6d4a8;">
       ${filasCheckout(pedido)}
     </table>
@@ -255,7 +278,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const emailTo = Deno.env.get('NOTIFY_EMAIL_TO');
     const emailFrom = Deno.env.get('NOTIFY_EMAIL_FROM');
     if (!resendApiKey || !emailTo || !emailFrom) {
-      console.error('notify-pedido: faltan secrets (RESEND_API_KEY / NOTIFY_EMAIL_TO / NOTIFY_EMAIL_FROM)');
+      console.error(
+        'notify-pedido: faltan secrets (RESEND_API_KEY / NOTIFY_EMAIL_TO / NOTIFY_EMAIL_FROM)',
+      );
       return json({ error: 'Configuración incompleta' }, 500);
     }
 

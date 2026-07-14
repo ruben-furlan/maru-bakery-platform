@@ -36,6 +36,12 @@ export const ADMIN_ROUTES: Routes = [
           import('./testimonials-admin.component').then((m) => m.TestimonialsAdminComponent),
       },
       {
+        path: 'envios',
+        title: 'Envíos — Marü Bakery Admin',
+        loadComponent: () =>
+          import('./shipping-admin.component').then((m) => m.ShippingAdminComponent),
+      },
+      {
         path: 'pedidos',
         title: 'Pedidos — Marü Bakery Admin',
         loadComponent: () => import('./orders-admin.component').then((m) => m.OrdersAdminComponent),

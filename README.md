@@ -23,8 +23,10 @@ Sin configurar Supabase, la landing funciona igual con datos de ejemplo locales
 
 1. Creá un proyecto en [supabase.com](https://supabase.com).
 2. En **SQL Editor**, ejecutá el contenido de [`supabase/schema.sql`](supabase/schema.sql).
-   Crea las tablas `productos`, `textos_sitio` y `pedidos`, las políticas RLS
-   (lectura pública / escritura autenticada), el bucket de Storage `productos` y datos iniciales.
+   Crea las tablas `productos`, `textos_sitio`, `pedidos`, `testimonios` y `zonas_envio`,
+   las políticas RLS (lectura pública / escritura autenticada), el bucket de Storage
+   `productos` y datos iniciales. Para bases ya creadas, aplicá solo las
+   `supabase/migration-*.sql` que falten (la más reciente: `migration-zonas-envio.sql`).
 3. En **Authentication → Users → Add user**, creá el usuario admin (email + contraseña).
 4. Copiá la URL y la anon key del proyecto (**Settings → API**) en
    `src/environments/environment.ts`:
@@ -43,8 +45,10 @@ export const environment = {
 - Ruta: `/admin` (link discreto "⚙ Acceso administración" en el footer).
 - Protegido por guard de Angular (`src/app/core/auth.guard.ts`) + RLS en Supabase.
 - Secciones: **Productos** (CRUD con foto vía Storage), **Destacados** (producto de la
-  semana del hero), **Textos del sitio** (eslogan, marquee, WhatsApp, contacto) y
-  **Pedidos** (consultas recibidas desde el formulario de la landing).
+  semana del hero), **Textos del sitio** (eslogan, marquee, WhatsApp, contacto),
+  **Testimonios**, **Envíos** (zonas de Montevideo con costo aproximado que ve el
+  cliente en el carrito) y **Pedidos** (consultas recibidas desde el formulario de la
+  landing).
 
 ## Deploy en Netlify
 
@@ -140,7 +144,7 @@ src/app/
 ├── core/        # modelos, cliente Supabase, servicios (signals), guard, fallback
 ├── shared/      # directiva de revelado al scroll, logo (manga pastelera SVG)
 ├── landing/     # header, hero, marquee, vitrina, pasos, instagram, footer, bottom bar
-└── admin/       # login, layout con sidebar, productos, destacados, textos, pedidos
+└── admin/       # login, layout con sidebar, productos, destacados, textos, testimonios, envíos, pedidos
 supabase/
 ├── schema.sql                        # esquema completo + RLS + seed
 ├── webhook-setup.md                  # cómo crear el webhook pedidos-notify

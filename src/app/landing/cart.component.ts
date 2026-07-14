@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService, MAX_POR_PRODUCTO } from '../core/cart.service';
-import { TipoEntrega, TipoPago } from '../core/models';
+import { TipoEntrega, TipoPago, ZonaEnvio } from '../core/models';
 import { OrdersService } from '../core/orders.service';
+import { ShippingZonesService } from '../core/shipping-zones.service';
 import { ScrollLockDirective } from '../shared/scroll-lock.directive';
 
 type Paso = 'carrito' | 'datos' | 'listo';
@@ -217,6 +218,35 @@ type Paso = 'carrito' | 'datos' | 'listo';
                   </div>
                 </fieldset>
 
+                @if (entrega === 'envio' && zonas.activas().length > 0) {
+                  <label class="block text-sm">
+                    <span class="mb-1 block font-bold text-cacao/80"
+                      >¿En qué zona de Montevideo estás? *</span
+                    >
+                    <select
+                      name="zonaEnvio"
+                      [(ngModel)]="zonaEnvioId"
+                      required
+                      class="w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5"
+                    >
+                      <option value="" disabled>Elegí tu zona</option>
+                      @for (zona of zonas.activas(); track zona.id) {
+                        <option [value]="zona.id">
+                          {{ zona.nombre }} — {{ zona.costo | currency: 'UYU' : '$ ' : '1.0-0' }}
+                        </option>
+                      }
+                      <option value="otra">Otra zona / no estoy seguro</option>
+                    </select>
+                    <span class="mt-1 block text-xs text-cacao/60">
+                      @if (zonaEnvioId === 'otra') {
+                        El costo de envío lo coordinamos juntos al confirmar el pedido.
+                      } @else {
+                        El costo es aproximado; lo confirmamos junto con el pedido.
+                      }
+                    </span>
+                  </label>
+                }
+
                 <label class="block text-sm">
                   <span class="mb-1 block font-bold text-cacao/80">
                     {{
@@ -367,8 +397,18 @@ type Paso = 'carrito' | 'datos' | 'listo';
                 >
                   ← Volver al carrito
                 </button>
-                <span class="font-display text-xl font-bold text-bordo">
-                  {{ carrito.total() | currency: 'UYU' : '$ ' : '1.0-0' }}
+                <span class="text-right">
+                  @if (zonaSeleccionada(); as zona) {
+                    <span class="block text-xs text-cacao/60">
+                      Incluye envío aprox. de
+                      {{ zona.costo | currency: 'UYU' : '$ ' : '1.0-0' }}
+                    </span>
+                  } @else if (entrega === 'envio' && zonaEnvioId === 'otra') {
+                    <span class="block text-xs text-cacao/60">+ envío a coordinar</span>
+                  }
+                  <span class="font-display text-xl font-bold text-bordo">
+                    {{ totalEstimado() | currency: 'UYU' : '$ ' : '1.0-0' }}
+                  </span>
                 </span>
               </div>
               <button
@@ -397,6 +437,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
 })
 export class CartComponent {
   readonly carrito = inject(CartService);
+  readonly zonas = inject(ShippingZonesService);
   protected readonly maxPorProducto = MAX_POR_PRODUCTO;
   private readonly pedidos = inject(OrdersService);
 
@@ -412,6 +453,18 @@ export class CartComponent {
   direccion = '';
   pago: TipoPago = 'transferencia';
   preferencias = '';
+  /** Id de la zona elegida, 'otra' (a coordinar) o '' si todavía no eligió. */
+  zonaEnvioId = '';
+
+  /** Zona activa elegida; null si retira, eligió "otra" o no eligió aún. */
+  protected zonaSeleccionada(): ZonaEnvio | null {
+    if (this.entrega !== 'envio') return null;
+    return this.zonas.activas().find((z) => z.id === this.zonaEnvioId) ?? null;
+  }
+
+  protected totalEstimado(): number {
+    return this.carrito.total() + (this.zonaSeleccionada()?.costo ?? 0);
+  }
 
   cerrar(): void {
     this.carrito.cerrar();
@@ -430,6 +483,7 @@ export class CartComponent {
 
     this.error.set(null);
     this.enviando.set(true);
+    const zona = this.zonaSeleccionada();
     const error = await this.pedidos.enviarPedidoCarrito(
       {
         nombre: this.nombre.trim(),
@@ -440,6 +494,11 @@ export class CartComponent {
         direccion: this.direccion.trim(),
         pago: this.pago,
         preferencias: this.preferencias.trim(),
+        zonaEnvio:
+          this.entrega === 'envio'
+            ? (zona?.nombre ?? (this.zonaEnvioId === 'otra' ? 'Otra zona / a coordinar' : null))
+            : null,
+        costoEnvio: zona?.costo ?? null,
       },
       this.carrito.items(),
     );
@@ -462,6 +521,16 @@ export class CartComponent {
     if (!this.telefono.trim()) return 'Completá tu teléfono.';
     if (this.entrega === 'envio' && !this.direccion.trim())
       return 'Completá la dirección de entrega.';
+    if (this.entrega === 'envio' && this.zonas.activas().length > 0 && !this.zonaEnvioId)
+      return 'Elegí tu zona para estimar el costo del envío.';
+    // Las zonas pueden refrescarse (fallback → Supabase) con otra id ya elegida.
+    if (
+      this.entrega === 'envio' &&
+      this.zonaEnvioId &&
+      this.zonaEnvioId !== 'otra' &&
+      !this.zonaSeleccionada()
+    )
+      return 'Las zonas de envío se actualizaron: volvé a elegir la tuya.';
     return null;
   }
 }

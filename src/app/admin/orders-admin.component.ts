@@ -62,11 +62,19 @@ import { OrdersService } from '../core/orders.service';
                   }}</span>
                 </li>
               }
+              @if (pedido.costo_envio != null) {
+                <li class="flex justify-between gap-3">
+                  <span>Envío aprox.</span>
+                  <span class="font-bold">{{
+                    pedido.costo_envio | currency: 'UYU' : '$ ' : '1.0-0'
+                  }}</span>
+                </li>
+              }
               @if (pedido.total != null) {
                 <li
                   class="flex justify-between gap-3 border-t border-bordo/10 pt-1 font-bold text-bordo"
                 >
-                  <span>Total</span>
+                  <span>{{ pedido.entrega === 'envio' ? 'Total estimado' : 'Total' }}</span>
                   <span>{{ pedido.total | currency: 'UYU' : '$ ' : '1.0-0' }}</span>
                 </li>
               }
@@ -86,6 +94,17 @@ import { OrdersService } from '../core/orders.service';
                   {{ pedido.entrega === 'envio' ? 'Envío' : 'Punto de encuentro' }}
                 </dd>
               </div>
+              @if (pedido.zona_envio) {
+                <div>
+                  <dt class="inline font-bold">Zona:</dt>
+                  <dd class="inline">
+                    {{ pedido.zona_envio }}
+                    @if (pedido.costo_envio == null) {
+                      (costo a coordinar)
+                    }
+                  </dd>
+                </div>
+              }
               <div>
                 <dt class="inline font-bold">Pago:</dt>
                 <dd class="inline">

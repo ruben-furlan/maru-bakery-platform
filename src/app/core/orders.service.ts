@@ -28,7 +28,7 @@ export class OrdersService {
     const client = this.supabase.client;
     if (!client) return 'Supabase no está configurado.';
 
-    const total = items.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
+    const subtotal = items.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
     const { error } = await client.from('pedidos').insert({
       nombre: datos.nombre,
       apellido: datos.apellido,
@@ -46,7 +46,10 @@ export class OrdersService {
         precio: i.producto.precio,
         cantidad: i.cantidad,
       })),
-      total,
+      zona_envio: datos.zonaEnvio,
+      costo_envio: datos.costoEnvio,
+      // Total estimado: si el costo de envío queda a coordinar, no se suma.
+      total: subtotal + (datos.costoEnvio ?? 0),
     });
     return error ? error.message : null;
   }
