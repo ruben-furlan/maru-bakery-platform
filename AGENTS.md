@@ -38,7 +38,7 @@ src/app/
 ├── shared/      # directivas (reveal, parallax, tilt, scroll-lock), logo SVG, scroll-progress
 ├── landing/     # header, hero, marquee, showcase (vitrina), steps, testimonials,
 │                # cart (drawer del carrito), mobile-nav (botón flotante + bottom bar), footer
-└── admin/       # login, layout con sidebar, productos, destacados, textos, testimonios, pedidos
+└── admin/       # login, layout con sidebar, productos, destacados, textos, testimonios, envíos, pedidos
 supabase/
 ├── schema.sql                        # esquema completo + RLS + seed (fuente de verdad)
 ├── migration-*.sql                   # migraciones incrementales ya aplicadas
