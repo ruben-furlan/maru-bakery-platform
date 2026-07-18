@@ -48,6 +48,9 @@ export class OrdersService {
       })),
       zona_envio: datos.zonaEnvio,
       costo_envio: datos.costoEnvio,
+      // Solo se manda la clave si hay punto: así los pedidos comunes no
+      // fallan si la migración de puntos_entrega todavía no se aplicó.
+      ...(datos.puntoEntrega ? { punto_entrega: datos.puntoEntrega } : {}),
       // Total estimado: si el costo de envío queda a coordinar, no se suma.
       total: subtotal + (datos.costoEnvio ?? 0),
     });

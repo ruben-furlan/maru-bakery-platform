@@ -93,7 +93,7 @@ const FORMULARIO_VACIO: FormularioProducto = {
             <select
               name="categoria"
               [(ngModel)]="form.categoria"
-              class="w-full rounded-xl border border-cacao/20 px-4 py-2.5"
+              class="select-marca w-full rounded-xl border border-cacao/20 bg-white px-4 py-2.5"
             >
               @for (cat of categorias; track cat) {
                 <option [value]="cat">{{ cat }}</option>

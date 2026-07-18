@@ -23,10 +23,10 @@ Sin configurar Supabase, la landing funciona igual con datos de ejemplo locales
 
 1. Creá un proyecto en [supabase.com](https://supabase.com).
 2. En **SQL Editor**, ejecutá el contenido de [`supabase/schema.sql`](supabase/schema.sql).
-   Crea las tablas `productos`, `textos_sitio`, `pedidos`, `testimonios` y `zonas_envio`,
-   las políticas RLS (lectura pública / escritura autenticada), el bucket de Storage
-   `productos` y datos iniciales. Para bases ya creadas, aplicá solo las
-   `supabase/migration-*.sql` que falten (la más reciente: `migration-zonas-envio.sql`).
+   Crea las tablas `productos`, `textos_sitio`, `pedidos`, `testimonios`, `zonas_envio` y
+   `puntos_entrega`, las políticas RLS (lectura pública / escritura autenticada), el bucket
+   de Storage `productos` y datos iniciales. Para bases ya creadas, aplicá solo las
+   `supabase/migration-*.sql` que falten (la más reciente: `migration-puntos-entrega.sql`).
 3. En **Authentication → Users → Add user**, creá el usuario admin (email + contraseña).
 4. Copiá la URL y la anon key del proyecto (**Settings → API**) en
    `src/environments/environment.ts`:

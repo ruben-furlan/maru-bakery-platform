@@ -42,6 +42,9 @@ export interface Pedido {
   // en punto de encuentro; costo null si la zona es "otra / a coordinar").
   zona_envio?: string | null;
   costo_envio?: number | null;
+  // Snapshot del punto de entrega elegido (null si es envío o si el
+  // cliente escribió el punto a mano en "direccion").
+  punto_entrega?: string | null;
 }
 
 export type TipoEntrega = 'envio' | 'punto_encuentro';
@@ -72,6 +75,7 @@ export interface DatosCheckout {
   preferencias: string;
   zonaEnvio: string | null;
   costoEnvio: number | null;
+  puntoEntrega: string | null;
 }
 
 /** Zona de Montevideo con costo aproximado de envío, configurable desde el admin. */
@@ -85,6 +89,17 @@ export interface ZonaEnvio {
 }
 
 export type ZonaEnvioNueva = Omit<ZonaEnvio, 'id' | 'creado_en'>;
+
+/** Punto de encuentro donde se entregan pedidos, configurable desde el admin. */
+export interface PuntoEntrega {
+  id: string;
+  nombre: string;
+  activo: boolean;
+  orden: number;
+  creado_en?: string;
+}
+
+export type PuntoEntregaNuevo = Omit<PuntoEntrega, 'id' | 'creado_en'>;
 
 /** Claves conocidas de la tabla textos_sitio. */
 export interface TextosSitio {

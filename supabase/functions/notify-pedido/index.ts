@@ -36,6 +36,7 @@ interface PedidoRecord {
   total: number | null;
   zona_envio: string | null;
   costo_envio: number | null;
+  punto_entrega: string | null;
 }
 
 interface WebhookPayload {
@@ -151,6 +152,7 @@ function filasCheckout(pedido: PedidoRecord): string {
   return [
     fila('Entrega', escapeHtml(entrega)),
     pedido.zona_envio ? fila('Zona', escapeHtml(pedido.zona_envio)) : '',
+    pedido.punto_entrega ? fila('Punto', escapeHtml(pedido.punto_entrega)) : '',
     pedido.entrega === 'envio' && pedido.costo_envio == null
       ? fila('Costo de envío', 'A coordinar al confirmar el pedido')
       : '',

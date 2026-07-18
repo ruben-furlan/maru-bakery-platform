@@ -1,4 +1,4 @@
-import { Producto, Testimonio, TextosSitio, ZonaEnvio } from './models';
+import { Producto, PuntoEntrega, Testimonio, TextosSitio, ZonaEnvio } from './models';
 
 /**
  * Datos de respaldo que se muestran cuando Supabase todavía no está
@@ -32,6 +32,10 @@ export const ZONAS_ENVIO_FALLBACK: ZonaEnvio[] = [
   },
   { id: 'fb-z3', nombre: 'Malvín, Buceo y La Blanqueada', costo: 180, activa: true, orden: 3 },
   { id: 'fb-z4', nombre: 'Carrasco y alrededores', costo: 250, activa: true, orden: 4 },
+];
+
+export const PUNTOS_ENTREGA_FALLBACK: PuntoEntrega[] = [
+  { id: 'fb-p1', nombre: 'Tres Cruces, explanada de la terminal', activo: true, orden: 1 },
 ];
 
 export const TESTIMONIOS_FALLBACK: Testimonio[] = [

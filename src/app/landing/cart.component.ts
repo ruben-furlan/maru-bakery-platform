@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService, MAX_POR_PRODUCTO } from '../core/cart.service';
-import { TipoEntrega, TipoPago, ZonaEnvio } from '../core/models';
+import { PuntoEntrega, TipoEntrega, TipoPago, ZonaEnvio } from '../core/models';
+import { MeetingPointsService } from '../core/meeting-points.service';
 import { OrdersService } from '../core/orders.service';
 import { ShippingZonesService } from '../core/shipping-zones.service';
 import { ScrollLockDirective } from '../shared/scroll-lock.directive';
@@ -227,7 +228,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
                       name="zonaEnvio"
                       [(ngModel)]="zonaEnvioId"
                       required
-                      class="w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5"
+                      class="select-marca w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5 transition-colors hover:border-bordo/40"
                     >
                       <option value="" disabled>Elegí tu zona</option>
                       @for (zona of zonas.activas(); track zona.id) {
@@ -247,28 +248,63 @@ type Paso = 'carrito' | 'datos' | 'listo';
                   </label>
                 }
 
-                <label class="block text-sm">
-                  <span class="mb-1 block font-bold text-cacao/80">
-                    {{
-                      entrega === 'envio'
-                        ? 'Dirección de entrega *'
-                        : 'Punto de encuentro que te quede cómodo'
-                    }}
-                  </span>
-                  <input
-                    type="text"
-                    name="direccion"
-                    [(ngModel)]="direccion"
-                    [required]="entrega === 'envio'"
-                    autocomplete="street-address"
-                    [placeholder]="
-                      entrega === 'envio'
-                        ? 'Calle, número y barrio'
-                        : 'Si lo dejás vacío, lo coordinamos juntos'
-                    "
-                    class="w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5"
-                  />
-                </label>
+                @if (entrega === 'punto_encuentro' && puntos.activos().length === 1) {
+                  <!-- Un solo punto configurado: se muestra fijo, sin selector -->
+                  <div class="block text-sm">
+                    <span class="mb-1 block font-bold text-cacao/80">Punto de entrega</span>
+                    <p
+                      class="flex items-center gap-2 rounded-xl border border-dorado/50 bg-dorado/10 px-3.5 py-2.5"
+                    >
+                      <span aria-hidden="true">📍</span>
+                      <span class="font-bold text-bordo">{{ puntos.activos()[0].nombre }}</span>
+                    </p>
+                  </div>
+                } @else if (entrega === 'punto_encuentro' && puntos.activos().length > 1) {
+                  <label class="block text-sm">
+                    <span class="mb-1 block font-bold text-cacao/80"
+                      >¿Qué punto te queda cómodo? *</span
+                    >
+                    <select
+                      name="puntoEntrega"
+                      [(ngModel)]="puntoEntregaId"
+                      required
+                      class="select-marca w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5 transition-colors hover:border-bordo/40"
+                    >
+                      <option value="" disabled>Elegí el punto de entrega</option>
+                      @for (punto of puntos.activos(); track punto.id) {
+                        <option [value]="punto.id">{{ punto.nombre }}</option>
+                      }
+                    </select>
+                    <span class="mt-1 block text-xs text-cacao/60">
+                      El día y la hora los coordinamos juntos al confirmar el pedido.
+                    </span>
+                  </label>
+                }
+
+                @if (entrega === 'envio' || puntos.activos().length === 0) {
+                  <label class="block text-sm">
+                    <span class="mb-1 block font-bold text-cacao/80">
+                      {{
+                        entrega === 'envio'
+                          ? 'Dirección de entrega *'
+                          : 'Punto de encuentro que te quede cómodo'
+                      }}
+                    </span>
+                    <input
+                      type="text"
+                      name="direccion"
+                      [(ngModel)]="direccion"
+                      [required]="entrega === 'envio'"
+                      autocomplete="street-address"
+                      [placeholder]="
+                        entrega === 'envio'
+                          ? 'Calle, número y barrio'
+                          : 'Si lo dejás vacío, lo coordinamos juntos'
+                      "
+                      class="w-full rounded-xl border border-bordo/20 bg-white px-3.5 py-2.5"
+                    />
+                  </label>
+                }
 
                 <fieldset>
                   <legend class="mb-2 text-sm font-bold text-cacao/80">¿Cómo pagás? *</legend>
@@ -438,6 +474,7 @@ type Paso = 'carrito' | 'datos' | 'listo';
 export class CartComponent {
   readonly carrito = inject(CartService);
   readonly zonas = inject(ShippingZonesService);
+  readonly puntos = inject(MeetingPointsService);
   protected readonly maxPorProducto = MAX_POR_PRODUCTO;
   private readonly pedidos = inject(OrdersService);
 
@@ -455,11 +492,21 @@ export class CartComponent {
   preferencias = '';
   /** Id de la zona elegida, 'otra' (a coordinar) o '' si todavía no eligió. */
   zonaEnvioId = '';
+  /** Id del punto de entrega elegido en el selector, o '' si no eligió. */
+  puntoEntregaId = '';
 
   /** Zona activa elegida; null si retira, eligió "otra" o no eligió aún. */
   protected zonaSeleccionada(): ZonaEnvio | null {
     if (this.entrega !== 'envio') return null;
     return this.zonas.activas().find((z) => z.id === this.zonaEnvioId) ?? null;
+  }
+
+  /** Punto elegido (o el único activo); null si es envío o no hay puntos. */
+  protected puntoSeleccionado(): PuntoEntrega | null {
+    if (this.entrega !== 'punto_encuentro') return null;
+    const activos = this.puntos.activos();
+    if (activos.length === 1) return activos[0];
+    return activos.find((p) => p.id === this.puntoEntregaId) ?? null;
   }
 
   protected totalEstimado(): number {
@@ -484,6 +531,10 @@ export class CartComponent {
     this.error.set(null);
     this.enviando.set(true);
     const zona = this.zonaSeleccionada();
+    const punto = this.puntoSeleccionado();
+    // La dirección libre solo aplica en envío o cuando no hay puntos
+    // configurados (el campo queda oculto en los demás casos).
+    const usaDireccionLibre = this.entrega === 'envio' || this.puntos.activos().length === 0;
     const error = await this.pedidos.enviarPedidoCarrito(
       {
         nombre: this.nombre.trim(),
@@ -491,7 +542,7 @@ export class CartComponent {
         email: this.email.trim(),
         telefono: this.telefono.trim(),
         entrega: this.entrega,
-        direccion: this.direccion.trim(),
+        direccion: usaDireccionLibre ? this.direccion.trim() : '',
         pago: this.pago,
         preferencias: this.preferencias.trim(),
         zonaEnvio:
@@ -499,6 +550,7 @@ export class CartComponent {
             ? (zona?.nombre ?? (this.zonaEnvioId === 'otra' ? 'Otra zona / a coordinar' : null))
             : null,
         costoEnvio: zona?.costo ?? null,
+        puntoEntrega: punto?.nombre ?? null,
       },
       this.carrito.items(),
     );
@@ -531,6 +583,12 @@ export class CartComponent {
       !this.zonaSeleccionada()
     )
       return 'Las zonas de envío se actualizaron: volvé a elegir la tuya.';
+    if (this.entrega === 'punto_encuentro' && this.puntos.activos().length > 1) {
+      if (!this.puntoEntregaId) return 'Elegí el punto de entrega que te quede cómodo.';
+      // Los puntos pueden refrescarse (fallback → Supabase) con otra id ya elegida.
+      if (!this.puntoSeleccionado())
+        return 'Los puntos de entrega se actualizaron: volvé a elegir el tuyo.';
+    }
     return null;
   }
 }

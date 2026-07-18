@@ -105,6 +105,12 @@ import { OrdersService } from '../core/orders.service';
                   </dd>
                 </div>
               }
+              @if (pedido.punto_entrega) {
+                <div>
+                  <dt class="inline font-bold">Punto de entrega:</dt>
+                  <dd class="inline">{{ pedido.punto_entrega }}</dd>
+                </div>
+              }
               <div>
                 <dt class="inline font-bold">Pago:</dt>
                 <dd class="inline">

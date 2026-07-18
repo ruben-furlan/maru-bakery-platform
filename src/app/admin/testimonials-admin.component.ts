@@ -42,7 +42,7 @@ import { TestimonialsService } from '../core/testimonials.service';
           <select
             name="estrellas"
             [(ngModel)]="estrellas"
-            class="w-full rounded-xl border border-cacao/20 px-4 py-2.5 sm:w-auto"
+            class="select-marca w-full rounded-xl border border-cacao/20 bg-white px-4 py-2.5 sm:w-auto"
           >
             @for (n of [5, 4, 3, 2, 1]; track n) {
               <option [value]="n">{{ '★'.repeat(n) }}</option>
